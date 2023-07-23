@@ -8,24 +8,34 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <header>
-        <h1>Player Select</h1>
-    </header>
-    <main>
-        <div class="assignment-container">
-            <div class="p1-assignment">
-                place img here
-            </div>
-            <div class="p2-assignment">
-                place img here
-            </div>
+    <main class="wrapper">
+        <header>
+            <h1>Player Select</h1>
+        </header>
+        <div class="p1-assignment">
+            place img here
         </div>
-        <form action="">
-            <label for="p1-name"><span>Name</span>
+        <div class="p2-assignment">
+            place img here
+        </div>
+        <form action="" class="player-info">
+            <label for="p1-name" class="name1-label">Name:
                 <input type="text" name="p1name" id="p1-name" value="Player-1">
             </label>
-            <label for="p2-name"><span>Name</span>
+            <label for="p1-x" class="p1-x-label">X
+                <input type="radio" name="p1assignment" id="p1-x">
+            </label>
+            <label for="p1-o" class="p1-o-label">O
+                <input type="radio" name="p1assignment" id="p1-o">
+            </label>
+            <label for="p2-name" class="name2-label">Name:
                 <input type="text" name="p2name" id="p2-name" value="Player-2">
+            </label>
+            <label for="p2-x" class="p2-x-label">X
+                <input type="radio" name="p2assignment" id="p2-x">
+            </label>
+            <label for="p2-o" class="p2-o-label">O
+                <input type="radio" name="p2assignment" id="p2-o">
             </label>
             <button type="button">Start Game</button>
         </form>
