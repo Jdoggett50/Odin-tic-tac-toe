@@ -1,27 +1,45 @@
-//function expressions are not available throughout your code
-//function expressions are used in effort to avoid polluting the 
-//global namespace. That being said, I think that is what this lesson
-//is trying to teach. How to write functions without polluting the
-//global namespace and how to utilize factory functions for memory
-//management. It wants me to utilize modules for the game
-//functionality and it wants me to utilize factory functions to create
-//players
-
-//because the data is returned from the function, it's data is
-//accessible globally.
-const getPlayer = (name, assignment) => {
-    return {
-        name,
-        assignment,
+const makePlayers = () => {
+    const setInfo = (name, assignment) => {
+        return {
+            name,
+            assignment,
+        }
+    };
+    
+    const getP1Name = () => {
+        const p1Name = document.querySelector('#p1-name');
+        return p1Name.value;
+    };
+    
+    const getP2Name = () => {
+        const p2Name = document.querySelector('#p2-name');
+        return p2Name.value;
     }
-}   
+    
+    const getAssignments = () => {
+    const radioAssignments = document.querySelectorAll('input[type="radio"]');
+    let assignmentsArray = [];
+    radioAssignments.forEach(index => {
+            if(index.checked){
+                assignmentsArray.push(index.dataset.player)
+            }
+        });
+        let player1Assignment = assignmentsArray[0];
+        let player2Assignment = assignmentsArray[1]; 
+        return {
+            player1Assignment,
+            player2Assignment
+        }
+    }
 
-//remember that returning the data from the function, allow access
-//to that data.
-const setPlayer = () => {
-    const p1Name = document.querySelector('#p1-name');
-    let player1 = getPlayer('john', 'x');
-    console.log(player1)
+    const {player1Assignment, player2Assignment} = getAssignments();
+    let player1 = setInfo(getP1Name(), player1Assignment);
+    let player2 = setInfo(getP2Name(), player2Assignment);
+
+    return {
+        player1, 
+        player2}
 }
 
-setPlayer()
+const submit = document.querySelector('button');
+submit.addEventListener('click', makePlayers());
