@@ -1,7 +1,12 @@
 const boardModule = (function(){
-
+    
     const generateBoard = () => {
-
+        const spaces = 9;
+        const board = [];
+        for(let i = 0; i < spaces; i++){
+            board.push([]);
+        }
+        return board;
     }
 
     const hideForm = () => {
@@ -53,7 +58,7 @@ const makePlayers = () => {
             player2Assignment,
         }
     }
-    const checkAssignments = () => {
+    const setPlayers = () => {
         if(getAssignments()){
         const {player1Assignment, player2Assignment} = getAssignments();
         let player1 = setInfo(getP1Name(), player1Assignment);
@@ -64,7 +69,7 @@ const makePlayers = () => {
         }
         }
     }
-    return checkAssignments()   
+    return setPlayers();
 }
 
 const submit = document.querySelector('button');
@@ -79,4 +84,3 @@ submit.addEventListener('click', () => {
 // const players = makePlayers();
 // const player1 = players.player1;
 // const player2 = players.player2;
-

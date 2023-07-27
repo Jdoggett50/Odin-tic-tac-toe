@@ -8,16 +8,33 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <main class="wrapper">
+    <main class="content-wrapper">
+        <div class="assignment-wrapper">
+            <div class="assignment">
+                place img here
+                <div>Player 1</div>
+            </div>
+            <div class="assignment">
+                place img here
+                <div>Player 2</div>
+            </div>
+        </div>
+        <div class="board-wrapper">
+            <div class="board-square"></div>
+            <div class="board-square"></div>
+            <div class="board-square"></div>
+            <div class="board-square"></div>
+            <div class="board-square"></div>
+            <div class="board-square"></div>
+            <div class="board-square"></div>
+            <div class="board-square"></div>
+            <div class="board-square"></div>
+        </div>
+    </main>
+    <aside class= "player-info-hide">
         <header>
             <h1>Player Select</h1>
         </header>
-        <div class="p1-assignment">
-            place img here
-        </div>
-        <div class="p2-assignment">
-            place img here
-        </div>
         <form action="" class="player-info">
             <label for="p1-name" class="name1-label">Name:
                 <input type="text" name="p1name" id="p1-name" value="Player-1">
@@ -39,6 +56,6 @@
             </label>
             <button type="button">Start Game</button>
         </form>
-    </main>
+    </aside>
 </body>
 </html>
