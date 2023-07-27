@@ -43,6 +43,10 @@ header h1 {
     grid-row: 3 / 4;
 }
 
+.player-info-hide {
+    display: none;
+}
+
 .name1-label {
     display: flex;
     flex-direction: column;

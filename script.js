@@ -1,3 +1,21 @@
+const boardModule = (function(){
+
+    const generateBoard = () => {
+
+    }
+
+    const hideForm = () => {
+        const main = document.querySelector('.wrapper');
+        main.classList.add('player-info-hide');
+        //target the form, add it to classlist with hide attached
+    }
+
+    return {
+        generateBoard,
+        hideForm,
+    }
+})()
+
 const makePlayers = () => {
     const setInfo = (name, assignment) => {
         return {
@@ -17,18 +35,21 @@ const makePlayers = () => {
     }
     
     const getAssignments = () => {
-    const radioAssignments = document.querySelectorAll('input[type="radio"]');
-    let assignmentsArray = [];
-    radioAssignments.forEach(index => {
+        const radioAssignments = document.querySelectorAll('input[type="radio"]');
+        let assignmentsArray = [];
+    // add a check for same value 
+    // add a check whether both are checked
+        radioAssignments.forEach(index => {
             if(index.checked){
-                assignmentsArray.push(index.dataset.player)
+                assignmentsArray.push(index.dataset.assignment);
             }
         });
+
         let player1Assignment = assignmentsArray[0];
         let player2Assignment = assignmentsArray[1]; 
         return {
             player1Assignment,
-            player2Assignment
+            player2Assignment,
         }
     }
 
@@ -38,8 +59,19 @@ const makePlayers = () => {
 
     return {
         player1, 
-        player2}
+        player2,
+    }
 }
 
 const submit = document.querySelector('button');
-submit.addEventListener('click', makePlayers());
+submit.addEventListener('click', () => {
+    makePlayers();
+    boardModule.hideForm();
+});
+
+
+//Below is globally available to any other function that is created.
+// const players = makePlayers();
+// const player1 = players.player1;
+// const player2 = players.player2;
+
