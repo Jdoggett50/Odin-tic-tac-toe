@@ -7,7 +7,6 @@ const boardModule = (function(){
     const hideForm = () => {
         const main = document.querySelector('.wrapper');
         main.classList.add('player-info-hide');
-        //target the form, add it to classlist with hide attached
     }
 
     return {
@@ -37,36 +36,42 @@ const makePlayers = () => {
     const getAssignments = () => {
         const radioAssignments = document.querySelectorAll('input[type="radio"]');
         let assignmentsArray = [];
-    // add a check for same value 
-    // add a check whether both are checked
         radioAssignments.forEach(index => {
             if(index.checked){
                 assignmentsArray.push(index.dataset.assignment);
             }
         });
-
+        
         let player1Assignment = assignmentsArray[0];
-        let player2Assignment = assignmentsArray[1]; 
+        let player2Assignment = assignmentsArray[1];
+        
+        if(player1Assignment == player2Assignment){
+            alert('player values must be different');
+        } else
         return {
             player1Assignment,
             player2Assignment,
         }
     }
-
-    const {player1Assignment, player2Assignment} = getAssignments();
-    let player1 = setInfo(getP1Name(), player1Assignment);
-    let player2 = setInfo(getP2Name(), player2Assignment);
-
-    return {
-        player1, 
-        player2,
+    const checkAssignments = () => {
+        if(getAssignments()){
+        const {player1Assignment, player2Assignment} = getAssignments();
+        let player1 = setInfo(getP1Name(), player1Assignment);
+        let player2 = setInfo(getP2Name(), player2Assignment);
+        return {
+            player1, 
+            player2,
+        }
+        }
     }
+    return checkAssignments()   
 }
 
 const submit = document.querySelector('button');
 submit.addEventListener('click', () => {
-    makePlayers();
-    boardModule.hideForm();
+    if(makePlayers()){
+        boardModule.hideForm();
+    }
 });
 
 
