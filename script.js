@@ -1,16 +1,31 @@
 const boardModule = (function(){
-    
+
     const generateBoard = () => {
-        const spaces = 9;
-        const board = [];
-        for(let i = 0; i < spaces; i++){
-            board.push([]);
+
+        const getSpaces = () => { 
+            const spaces = 9;
+            const board = [];
+            for(let i = 0; i < spaces; i++){
+                board.push([]);
+            }
+            return board;
         }
-        return board;
+
+        // const display_Squares = () => {
+        //     if(getSpaces()) {
+                
+        //     }
+        // }
+
+        return {
+            // display_Squares,
+            getSpaces,
+        }
     }
 
+    //this can hide either main or the gameBoard.
     const hideForm = () => {
-        const main = document.querySelector('.wrapper');
+        const main = document.querySelector('.form-wrapper');
         main.classList.add('player-info-hide');
     }
 
@@ -21,24 +36,24 @@ const boardModule = (function(){
 })()
 
 const makePlayers = () => {
-    const setInfo = (name, assignment) => {
+    const set_Info = (name, assignment) => {
         return {
             name,
             assignment,
         }
     };
     
-    const getP1Name = () => {
+    const get_P1Name = () => {
         const p1Name = document.querySelector('#p1-name');
         return p1Name.value;
     };
     
-    const getP2Name = () => {
+    const get_P2Name = () => {
         const p2Name = document.querySelector('#p2-name');
         return p2Name.value;
     }
-    
-    const getAssignments = () => {
+
+    const get_Assignments = () => {
         const radioAssignments = document.querySelectorAll('input[type="radio"]');
         let assignmentsArray = [];
         radioAssignments.forEach(index => {
@@ -46,41 +61,45 @@ const makePlayers = () => {
                 assignmentsArray.push(index.dataset.assignment);
             }
         });
-        
-        let player1Assignment = assignmentsArray[0];
-        let player2Assignment = assignmentsArray[1];
-        
-        if(player1Assignment == player2Assignment){
-            alert('player values must be different');
-        } else
-        return {
-            player1Assignment,
-            player2Assignment,
-        }
+        return assignmentsArray;
     }
-    const setPlayers = () => {
-        if(getAssignments()){
-        const {player1Assignment, player2Assignment} = getAssignments();
-        let player1 = setInfo(getP1Name(), player1Assignment);
-        let player2 = setInfo(getP2Name(), player2Assignment);
+
+    const checkAssignments = ()=> {
+        const assignments = get_Assignments();
+        const p1Assignment = assignments[0];
+        const p2Assignment = assignments[1]
+        if (p1Assignment == p2Assignment){
+            return alert('Assignments must differ');
+        }  
+        const player1 = set_Info(get_P1Name(), p1Assignment);
+        const player2 = set_Info(get_P2Name(), p2Assignment);
         return {
-            player1, 
+            player1,
             player2,
         }
-        }
     }
-    return setPlayers();
+    return checkAssignments()
 }
 
 const submit = document.querySelector('button');
 submit.addEventListener('click', () => {
-    if(makePlayers()){
-        boardModule.hideForm();
+    //this should be handled in a control flow object or module
+    //right now it is in here for testing purposes.
+    const players = makePlayers();
+    const player1 = players.player1;
+    const player2 = players.player2;
+    if(player1 || player2){
+        const newBoard = boardModule.generateBoard();
+        newBoard.hideForm();
     }
 });
 
+//when I generateBoard, the divs and array are supposed to be empty
+//on click of the submit button, generate the board  
+
 
 //Below is globally available to any other function that is created.
-// const players = makePlayers();
-// const player1 = players.player1;
-// const player2 = players.player2;
+// const getPlayers = makePlayers();
+// const players = getPlayers.setPlayers();
+// let player1 = players.player1;
+// let player2 = players.player2;

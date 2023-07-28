@@ -94,18 +94,15 @@ header h1 {
     border: 1px solid red;
 }
 
-.assignment-wrapper {
-    
-}
-
-.assignment {
-    
-}
-
 .board-wrapper {
-    
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3,1fr);
+    width: 300px;
+    height: 300px;
+    border: 1px solid black;
 }
 
 .board-square {
-
+    border: 1px solid black;
 }
