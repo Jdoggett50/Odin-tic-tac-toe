@@ -1,29 +1,14 @@
 const boardModule = (function(){
-
     const generateBoard = () => {
-
-        const getSpaces = () => { 
-            const spaces = 9;
-            const board = [];
-            for(let i = 0; i < spaces; i++){
-                board.push([]);
-            }
-            return board;
+        const spaces = 9;
+        const board = [];
+        for(let i = 0; i < spaces; i++){
+            board.push([]);
         }
-
-        // const display_Squares = () => {
-        //     if(getSpaces()) {
-                
-        //     }
-        // }
-
-        return {
-            // display_Squares,
-            getSpaces,
-        }
+        return board;
     }
 
-    //this can hide either main or the gameBoard.
+    //this should hide either main or the gameBoard.
     const hideForm = () => {
         const main = document.querySelector('.form-wrapper');
         main.classList.add('player-info-hide');
@@ -34,6 +19,7 @@ const boardModule = (function(){
         hideForm,
     }
 })()
+
 
 const makePlayers = () => {
     const set_Info = (name, assignment) => {
@@ -67,7 +53,7 @@ const makePlayers = () => {
     const checkAssignments = ()=> {
         const assignments = get_Assignments();
         const p1Assignment = assignments[0];
-        const p2Assignment = assignments[1]
+        const p2Assignment = assignments[1];
         if (p1Assignment == p2Assignment){
             return alert('Assignments must differ');
         }  
@@ -78,20 +64,44 @@ const makePlayers = () => {
             player2,
         }
     }
-    return checkAssignments()
+    return checkAssignments();
 }
 
-const submit = document.querySelector('button');
-submit.addEventListener('click', () => {
-    //this should be handled in a control flow object or module
-    //right now it is in here for testing purposes.
+const gameController = (() => {
+    
     const players = makePlayers();
     const player1 = players.player1;
     const player2 = players.player2;
-    if(player1 || player2){
-        const newBoard = boardModule.generateBoard();
-        newBoard.hideForm();
+    
+    //check board for available spaces. 
+    const available_Spaces = () => {
+        const board = boardModule.generateBoard();
+        console.log(board);
+        board.forEach(index => {
+            if(index == ''){
+                console.log(index);
+            }
+        })
+        //loop over the array to check if a selected 
+        //spaces is available
+
     }
+
+    return {
+        available_Spaces,
+    }
+})()
+
+    //if players exist, create the board
+    //player1 always goes first. after player1 logs his selection,
+    //switch to player2 
+    //don't allow values in squares that have existing values
+    //what is a win?
+    //what is a tie?
+
+const submit = document.querySelector('button');
+submit.addEventListener('click', () => {
+    gameController.available_Spaces();
 });
 
 //when I generateBoard, the divs and array are supposed to be empty
