@@ -9,14 +9,14 @@ const boardModule = (function(){
     }
 
     //this should hide either main or the gameBoard.
-    const hideForm = () => {
+    const hidePage = () => {
         const main = document.querySelector('.form-wrapper');
         main.classList.add('player-info-hide');
     }
 
     return {
         generateBoard,
-        hideForm,
+        hidePage,
     }
 })()
 
@@ -50,7 +50,7 @@ const makePlayers = () => {
         return assignmentsArray;
     }
 
-    const checkAssignments = ()=> {
+    const checkAssignments = () => {
         const assignments = get_Assignments();
         const p1Assignment = assignments[0];
         const p2Assignment = assignments[1];
@@ -67,28 +67,47 @@ const makePlayers = () => {
     return checkAssignments();
 }
 
-const gameController = (() => {
-    
+
+const gameController = ((evt) => {
     const players = makePlayers();
     const player1 = players.player1;
     const player2 = players.player2;
+    const check_assignment = (evt) => {
+        if(evt.target.closest('.board-square').dataset.assignment === ''){
+            console.log('true')
+            return true;
+        }   else
+        console.log('false')
+        return false;
+    };
     
-    //check board for available spaces. 
-    const available_Spaces = () => {
-        const board = boardModule.generateBoard();
-        console.log(board);
-        board.forEach(index => {
-            if(index == ''){
-                console.log(index);
-            }
-        })
-        //loop over the array to check if a selected 
-        //spaces is available
-
+    const change_player = () => {
+        
     }
 
+    const set_assignment = () => {
+        let isAssigned = check_assignment();
+        if(isAssigned()){
+            return 
+        }
+        
+    }
+
+
+
+    //receive the array index that the player has selected.
+    //the loop below is looking at all the div.board-squares and returning a matching
+    // index with a variable that is passed into it. 
+    const match_Selection = () => {
+        const boardSquares = document.querySelectorAll('.board-square');
+        for(let i = 0; i < boardSquares.length; i++){
+            if(i == testVar){
+                return i;
+            };
+        };
+    };
     return {
-        available_Spaces,
+        check_assignment,
     }
 })()
 
@@ -101,15 +120,34 @@ const gameController = (() => {
 
 const submit = document.querySelector('button');
 submit.addEventListener('click', () => {
-    gameController.available_Spaces();
+    gameController.get_selection();
 });
 
-//when I generateBoard, the divs and array are supposed to be empty
-//on click of the submit button, generate the board  
+const boardWrapper = document.querySelector('.board-wrapper');
 
+boardWrapper.addEventListener('click', (e) => {
+    gameController.check_assignment(e);
+})
 
-//Below is globally available to any other function that is created.
-// const getPlayers = makePlayers();
-// const players = getPlayers.setPlayers();
-// let player1 = players.player1;
-// let player2 = players.player2;
+function checkArray(index) {
+    if(testArray[index] == ''){
+        return true
+    } else 
+        return false
+}
+
+let currentPlayer = '';
+let player1 = 'haleigh'
+let player2 = 'john'
+
+let testArray = [[],[],[],[],[]];
+
+function pushArray(index) {
+    if(checkArray(index)){
+        currentPlayer = player1;
+        testArray[index].push(currentPlayer);
+    }
+    return testArray
+}
+
+console.log(pushArray(3))
