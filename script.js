@@ -69,45 +69,57 @@ const makePlayers = () => {
 
 
 const gameController = ((evt) => {
+    
     const players = makePlayers();
     const player1 = players.player1;
     const player2 = players.player2;
-    const check_assignment = (evt) => {
+
+    const get_index = (evt) => {
         if(evt.target.closest('.board-square').dataset.assignment === ''){
-            console.log('true')
-            return true;
-        }   else
-        console.log('false')
-        return false;
+            //should return true and the data-index at the location of the click
+            let targetIndex = evt.target.dataset.index; 
+            console.log(targetIndex)
+            return {
+                targetIndex,
+            }
+        }
     };
     
     const change_player = () => {
         
     }
 
-    const set_assignment = () => {
-        let isAssigned = check_assignment();
-        if(isAssigned()){
-            return 
-        }
-        
+    const set_index = (player) => {
+        // let player = returned value from cycle_player
+        // if there is a value not existing at the clicked location
+        let isAssigned = true;
+        if(isAssigned){
+            return player.assignment;
+        } 
     }
-
-
 
     //receive the array index that the player has selected.
     //the loop below is looking at all the div.board-squares and returning a matching
     // index with a variable that is passed into it. 
-    const match_Selection = () => {
-        const boardSquares = document.querySelectorAll('.board-square');
-        for(let i = 0; i < boardSquares.length; i++){
-            if(i == testVar){
-                return i;
+
+    const match_index = () => {
+        //testVar is the variable received from 
+        //variable that is received from player assignment
+        const assignment = set_index(player1);
+        console.log(set_index(player1))
+        const boardArray = boardModule.generateBoard();
+        for(let i = 0; i < boardArray; i++){
+            if(i == matched){
+                return boardArray[i].push(assignment);
             };
         };
     };
+
+    match_index()
+
     return {
-        check_assignment,
+        // match_index,
+        // get_index,
     }
 })()
 
@@ -126,28 +138,6 @@ submit.addEventListener('click', () => {
 const boardWrapper = document.querySelector('.board-wrapper');
 
 boardWrapper.addEventListener('click', (e) => {
-    gameController.check_assignment(e);
+    // gameController.get_index(e);
+    // console.log(gameController.match_index());
 })
-
-function checkArray(index) {
-    if(testArray[index] == ''){
-        return true
-    } else 
-        return false
-}
-
-let currentPlayer = '';
-let player1 = 'haleigh'
-let player2 = 'john'
-
-let testArray = [[],[],[],[],[]];
-
-function pushArray(index) {
-    if(checkArray(index)){
-        currentPlayer = player1;
-        testArray[index].push(currentPlayer);
-    }
-    return testArray
-}
-
-console.log(pushArray(3))
