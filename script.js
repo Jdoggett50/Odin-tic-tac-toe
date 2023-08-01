@@ -95,21 +95,27 @@ const gameController = ((evt) => {
         let squareAssignment = evt.target.dataset.assignment;
         for(let i = 0; i <= newGame.length; i++){
             if(i === +selectionIndex && squareAssignment === ''){
-                return selectionIndex
+                return selectionIndex;
             }
         }
-        return false
+        return false;
     }
 
     //place assignment into array
     const insertAssignment = (evt) => {
-        //as long as the above function returns true, receive the selection index value
-        //and insert player assignment to the arrays index 
         if(check_index_value(evt)){
             let selectionIndex = check_index_value(evt)
-            newGame[selectionIndex].push(player1.assignment);
+
+            newGame[+selectionIndex].push();
             console.log(newGame)
         }
+    }
+
+    //now I need to alternate players based off of whether or not the check_index_value
+    //function returns true. I don't need the value, just whether is truthy or falsy 
+    const switch_players = () => {
+        //initial player should be player1
+        let player = ;
     }
 
     return {
