@@ -70,74 +70,69 @@ const makePlayers = () => {
 
 const gameController = ((evt) => {
     
+    //initialize the variables that store the data from the form and boardModule
     const players = makePlayers();
     const player1 = players.player1;
     const player2 = players.player2;
 
-    const get_index = (evt) => {
-        if(evt.target.closest('.board-square').dataset.assignment === ''){
-            //should return true and the data-index at the location of the click
-            let targetIndex = evt.target.dataset.index; 
-            console.log(targetIndex)
-            return {
-                targetIndex,
+    //this creates and returns the board array on function call.
+    const get_game_board = () => {
+        const boardArray = boardModule.generateBoard();
+        return boardArray;
+    }
+    const newGame = get_game_board();
+
+    //get the data from the player clicks.
+    const get_selection_index = (evt) => {
+        let playerSelection = evt.target.dataset.index;
+        return playerSelection
+    }
+
+    //check the selected spaces for an empty value
+    const check_index_value = (evt) => {
+        //loop over the array until the passed index matches and check for ''
+        let selectionIndex = get_selection_index(evt);
+        let squareAssignment = evt.target.dataset.assignment;
+        for(let i = 0; i <= newGame.length; i++){
+            if(i === +selectionIndex && squareAssignment === ''){
+                return selectionIndex
             }
         }
-    };
-    
-    const change_player = () => {
-        
+        return false
     }
 
-    const set_index = (player) => {
-        // let player = returned value from cycle_player
-        // if there is a value not existing at the clicked location
-        let isAssigned = true;
-        if(isAssigned){
-            return player.assignment;
-        } 
+    //place assignment into array
+    const insertAssignment = (evt) => {
+        //as long as the above function returns true, receive the selection index value
+        //and insert player assignment to the arrays index 
+        if(check_index_value(evt)){
+            let selectionIndex = check_index_value(evt)
+            newGame[selectionIndex].push(player1.assignment);
+            console.log(newGame)
+        }
     }
-
-    //receive the array index that the player has selected.
-    //the loop below is looking at all the div.board-squares and returning a matching
-    // index with a variable that is passed into it. 
-
-    const match_index = () => {
-        //testVar is the variable received from 
-        //variable that is received from player assignment
-        const assignment = set_index(player1);
-        console.log(set_index(player1))
-        const boardArray = boardModule.generateBoard();
-        for(let i = 0; i < boardArray; i++){
-            if(i == matched){
-                return boardArray[i].push(assignment);
-            };
-        };
-    };
-
-    match_index()
 
     return {
-        // match_index,
-        // get_index,
+        insertAssignment,
     }
 })()
 
-    //if players exist, create the board
-    //player1 always goes first. after player1 logs his selection,
-    //switch to player2 
-    //don't allow values in squares that have existing values
-    //what is a win?
-    //what is a tie?
-
 const submit = document.querySelector('button');
 submit.addEventListener('click', () => {
-    gameController.get_selection();
+    //this generates the board 
+    //this is responsible for making the form disappear and starting the game 
+    
 });
 
 const boardWrapper = document.querySelector('.board-wrapper');
 
 boardWrapper.addEventListener('click', (e) => {
-    // gameController.get_index(e);
-    // console.log(gameController.match_index());
+    //this is ONLY providing data to the gameController.
+    gameController.insertAssignment(e);
+    //this houses the function that controls the flow of the game.
 })
+
+//trying to get the player assignment to insert into the array. 
+//This requires checking the array's index for an undefined value,
+//getting the dataset.index value out of the DOM element then placing 
+//the value of the player into the boardArray
