@@ -17,25 +17,32 @@ const boardModule = (()=>{
     }
 })()
 
-const player1 = {name:'john', assignment:'x',};
-const player2 = {name:'haleigh', assignment:'o',};
-
-function switchPlayers(){
-    //if every index is empty, return player1 object
-    
-}
-console.log(switchPlayers())
 
 const gameController = (() => {
     //this monitors the state of the board and insertions into the board
     const newBoard = boardModule.getBoard();
-    const getPlayer = (name, assignment) => { 
+    const player1 = {name:'john', assignment:'x',};
+    const player2 = {name:'haleigh', assignment:'o',};
+
+    const players = [player1,player2];
+    const setPlayer = (name, assignment) => { 
         return {
             name, assignment
         }
     }
+
+    const getPlayer = (players) => {
+        let turnCounter = 1;
+        if(turnCounter % 2 === 0){
+            return players[1].assignment;
+        } else
+        return players[0].assignment;
+    }
+
+    console.log(getPlayer(players))
+
     return {
-        getPlayer,
+        setPlayer,
     }
 })()
 
