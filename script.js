@@ -31,15 +31,19 @@ const gameController = (() => {
         }
     }
 
-    const getPlayer = (players) => {
-        let turnCounter = 1;
-        if(turnCounter % 2 === 0){
+    let turnCounter = 0;
+    const _getassignment = (players) => {
+        turnCounter++
+        const _switchPlayer = () => {
+            if(turnCounter % 2 === 0){
             return players[1].assignment;
-        } else
-        return players[0].assignment;
+            } else
+            return players[0].assignment;
+        }
+        return _switchPlayer()
     }
 
-    console.log(getPlayer(players))
+
 
     return {
         setPlayer,
