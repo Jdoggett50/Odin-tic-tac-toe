@@ -17,33 +17,34 @@ const boardModule = (()=>{
     }
 })()
 
+const player1 = {name:'john', assignment:'x',};
+const player2 = {name:'haleigh', assignment:'o',};
+const players = [player1,player2];
+const newGame = boardModule.getBoard();
+newGame[4].push(player1.assignment)
+newGame[2].push(player2.assignment)
+
+const getAssignment = (arr,players) => {
+    const count = arr.filter(index => index != '')
+    console.log(count.length)
+    console.log(Boolean((count.length % 2) + 1 === 0))
+    if(count.length === 0 || count.length % 2 + 1 === 0){
+        return players[0].assignment;
+    } else 
+        return players[1].assignment;
+}
+
+console.log(getAssignment(boardModule.getBoard(),players))
 
 const gameController = (() => {
     //this monitors the state of the board and insertions into the board
-    const newBoard = boardModule.getBoard();
-    const player1 = {name:'john', assignment:'x',};
-    const player2 = {name:'haleigh', assignment:'o',};
 
-    const players = [player1,player2];
     const setPlayer = (name, assignment) => { 
         return {
             name, assignment
         }
     }
-
-    let turnCounter = 0;
-    const _getassignment = (players) => {
-        turnCounter++
-        const _switchPlayer = () => {
-            if(turnCounter % 2 === 0){
-            return players[1].assignment;
-            } else
-            return players[0].assignment;
-        }
-        return _switchPlayer()
-    }
-
-
+    
 
     return {
         setPlayer,
