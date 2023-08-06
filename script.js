@@ -23,7 +23,7 @@ const players = [player1,player2];
 
 const getAssignment = (arr,players) => {
     const count = arr.filter(index => index != '')
-    console.log(count.length)
+    // console.log(count.length)
     if(count.length === 0 || count.length % 2 === 0){
         return players[0].assignment;
     } else 
@@ -37,9 +37,12 @@ const getAssignment = (arr,players) => {
 
 const gameController = (() => {
     //this monitors the state of the board and insertions into the board
-    // const newGame = boardModule.getBoard();
+    const newGame = boardModule.getBoard();
+    for(let i = 0; i < newGame.length; i++){
+        boardModule.insertAssignment(i,getAssignment(newGame,players))
+    }
+    console.log(newGame)
 
-    const winner = false;
 
     const _setPlayer = (name, assignment) => { 
         return {
@@ -48,25 +51,33 @@ const gameController = (() => {
         }
     }
 
-    const _getWin = (arr) => {
-        //if x or o is represented in only these spots, there is a 
-        //winner
-        //
+    const _checkWin = (arr) => {
+        
+        const winCases = [
+            [0,1,2],[3,4,5],[6,7,8],
+            [0,3,6],[1,4,7],[2,5,8],
+            [0,4,8],[2,4,6]
+        ];
+        // let win = winCases[0]
+        console.log(arr[2], arr[4], arr[6])
+        console.log(arr[2] === arr[4] && arr[4] === arr[6])
+        for(const [a, b, c] of winCases){
+            console.log(arr[a],arr[b], arr[c])
+            
+        }
+
+        // for(let i = 0; i < winCases.length; i++){
+
+        // }
     }
 
-    const _checkWin = (arr) => {
-        console.log(arr)
-        //this will check if the game is won, if the game is won
-        //display a message saying whichever player is the winner
-        //compare the two player's assignments for the winner's value
-    }
-    
+    _checkWin(newGame)
+
     const playRound = () => {
 
     }
 
     const startGame = (arr) => {
-        _checkWin(newGame)
         //this will cycle through the turns
         //place the inputs inside the game
     }
