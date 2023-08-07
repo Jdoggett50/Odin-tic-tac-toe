@@ -41,8 +41,8 @@ const gameController = (() => {
     for(let i = 0; i < newGame.length; i++){
         boardModule.insertAssignment(i,getAssignment(newGame,players))
     }
-    console.log(newGame)
 
+    
 
     const _setPlayer = (name, assignment) => { 
         return {
@@ -52,26 +52,24 @@ const gameController = (() => {
     }
 
     const _checkWin = (arr) => {
-        
+        let gameWin = false;
         const winCases = [
             [0,1,2],[3,4,5],[6,7,8],
             [0,3,6],[1,4,7],[2,5,8],
             [0,4,8],[2,4,6]
         ];
-        // let win = winCases[0]
-        console.log(arr[2], arr[4], arr[6])
-        console.log(arr[2] === arr[4] && arr[4] === arr[6])
-        for(const [a, b, c] of winCases){
-            console.log(arr[a],arr[b], arr[c])
-            
+
+        //there shouldn't be a won game with an array of empty cells
+        //this should also tell the game which player has won.
+        for(const [a,b,c] of winCases){
+            if(arr[a].toString() === arr[b].toString() && arr[b].toString() === arr[c].toString()){
+                gameWin = true;
+            } 
         }
-
-        // for(let i = 0; i < winCases.length; i++){
-
-        // }
+        return gameWin
     }
 
-    _checkWin(newGame)
+    _checkWin(boardModule.getBoard())
 
     const playRound = () => {
 
