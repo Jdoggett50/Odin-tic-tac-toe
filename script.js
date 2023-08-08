@@ -17,18 +17,6 @@ const boardModule = (()=>{
     }
 })()
 
-const player1 = {name:'john', assignment:'x',};
-const player2 = {name:'haleigh', assignment:'o',};
-const players = [player1,player2];
-
-const getAssignment = (arr,players) => {
-    const count = arr.filter(index => index != '')
-    // console.log(count.length)
-    if(count.length === 0 || count.length % 2 === 0){
-        return players[0].assignment;
-    } else 
-        return players[1].assignment;
-}
 
 //when the player selects an array space, 
 //getAssignment(boardModule.getBoard(),players)
@@ -37,51 +25,64 @@ const getAssignment = (arr,players) => {
 
 const gameController = (() => {
     //this monitors the state of the board and insertions into the board
-    const newGame = boardModule.getBoard();
-    for(let i = 0; i < newGame.length; i++){
-        boardModule.insertAssignment(i,getAssignment(newGame,players))
-    }
-
+    const player1 = {name:'john', assignment:'x',};
+    const player2 = {name:'haleigh', assignment:'o',};
+    const players = [player1,player2];
     
-
+    const getAssignment = (arr,players) => {
+        const count = arr.filter(index => index != '')
+        // console.log(count.length)
+        if(count.length === 0 || count.length % 2 === 0){
+            return players[0].assignment;
+        } else 
+        return players[1].assignment;
+    }
+    
     const _setPlayer = (name, assignment) => { 
         return {
             name, 
-            assignment
+            assignment,
         }
     }
-
+    
     const _checkWin = (arr) => {
-        let gameWin = false;
+        let gameWin = false
         const winCases = [
             [0,1,2],[3,4,5],[6,7,8],
             [0,3,6],[1,4,7],[2,5,8],
             [0,4,8],[2,4,6]
         ];
-
-        //there shouldn't be a won game with an array of empty cells
-        //this should also tell the game which player has won.
+        console.table(arr)
         for(const [a,b,c] of winCases){
-            if(arr[a].toString() === arr[b].toString() && arr[b].toString() === arr[c].toString()){
+            if(arr[a].toString() === '' && arr[b].toString() === '' && arr[c].toString() === arr[b].toString()){
+                return gameWin
+            }   else if (arr[a].toString() === arr[b].toString() && arr[b].toString() === arr[c].toString()) {
                 gameWin = true;
-            } 
+            }
         }
         return gameWin
     }
 
-    _checkWin(boardModule.getBoard())
-
+    console.log(_checkWin(newGame))
+        
     const playRound = () => {
-
+        
     }
-
+    
     const startGame = (arr) => {
         //this will cycle through the turns
         //place the inputs inside the game
     }
-
+    
     return {
         
     }
 })()
 
+
+// if(arr[a].toString() ===  '' && arr[b].toString() === '' && arr[c].toString() === ''){
+//     gameWin = false;
+// }   else (arr[a].toString() === arr[b].toString() && arr[b].toString() === arr[c].toString())
+//     gameWin = true;
+// } 
+// return gameWin
