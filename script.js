@@ -1,9 +1,10 @@
 const boardModule = (()=>{
-    //this changes the state of the board.
     const board = [[],[],[],[],[],[],[],[],[]];
-
+    
+    //returns created board for use in another function
     const getBoard = () => board;
-
+    
+    //takes the selection index and assignment and places it inside arr
     const insertAssignment = (selection,assignment) => {
         if(board[selection].length < 1){
             return board[selection].push(assignment);
@@ -17,27 +18,23 @@ const boardModule = (()=>{
     }
 })()
 
-
-//when the player selects an array space, 
-//getAssignment(boardModule.getBoard(),players)
-// ^^ gives the gameController the correct player based on the boards
-// length
-
 const gameController = (() => {
-    //this monitors the state of the board and insertions into the board
     const player1 = {name:'john', assignment:'x',};
     const player2 = {name:'haleigh', assignment:'o',};
     const players = [player1,player2];
+    const newGame = boardModule.getBoard()
     
-    const getAssignment = (arr,players) => {
+    //switches player values
+    const _cyclePlayers = (arr,players) => {
         const count = arr.filter(index => index != '')
-        // console.log(count.length)
         if(count.length === 0 || count.length % 2 === 0){
             return players[0].assignment;
         } else 
         return players[1].assignment;
     }
-    
+
+    //gets the assignments from the submission of the form and creates
+    //the players
     const _setPlayer = (name, assignment) => { 
         return {
             name, 
@@ -45,6 +42,7 @@ const gameController = (() => {
         }
     }
     
+    //returns a boolean whether a win condition is met
     const _checkWin = (arr) => {
         let gameWin = false
         const winCases = [
@@ -52,7 +50,7 @@ const gameController = (() => {
             [0,3,6],[1,4,7],[2,5,8],
             [0,4,8],[2,4,6]
         ];
-        console.table(arr)
+        
         for(const [a,b,c] of winCases){
             if(arr[a].toString() === '' && arr[b].toString() === '' && arr[c].toString() === arr[b].toString()){
                 return gameWin
@@ -62,9 +60,8 @@ const gameController = (() => {
         }
         return gameWin
     }
-
-    console.log(_checkWin(newGame))
         
+
     const playRound = () => {
         
     }
@@ -78,11 +75,3 @@ const gameController = (() => {
         
     }
 })()
-
-
-// if(arr[a].toString() ===  '' && arr[b].toString() === '' && arr[c].toString() === ''){
-//     gameWin = false;
-// }   else (arr[a].toString() === arr[b].toString() && arr[b].toString() === arr[c].toString())
-//     gameWin = true;
-// } 
-// return gameWin
