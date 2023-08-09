@@ -72,16 +72,55 @@ const gameController = (() => {
 
 const screenController = (() => {
 
-    const _getPlayers = () => {
-        //look at the form inputs and the checkboxes.
-        const p1Name = document.querySelector('#p1-name');
-        const p2Name = document.querySelector('#p2-name');
-        let player1 = p1Name.value;
-        let player2 = p2Name.value;
-        return {
-            player1,
-            player2,
+    const _makePlayers = () => {
+        const set_Info = (name, assignment) => {
+            return {
+                name,
+                assignment,
+            }
+        };
+        
+        const get_P1Name = () => {
+            const p1Name = document.querySelector('#p1-name');
+            return p1Name.value;
+        };
+        
+        const get_P2Name = () => {
+            const p2Name = document.querySelector('#p2-name');
+            return p2Name.value;
         }
+    
+        const get_Assignments = () => {
+            const radioAssignments = document.querySelectorAll('input[type="radio"]');
+            let assignmentsArray = [];
+            radioAssignments.forEach(index => {
+                if(index.checked){
+                    assignmentsArray.push(index.dataset.assignment);
+                }
+            });
+            return assignmentsArray;
+        }
+    
+        const checkAssignments = () => {
+            let assignBool = true;
+            const assignments = get_Assignments();
+            const p1Assignment = assignments[0];
+            const p2Assignment = assignments[1];
+            if (p1Assignment == p2Assignment){
+                assignBool = false;
+                alert('Assignments must differ');
+            }  
+            if(assignBool){
+                _hideForm()
+            }
+            const player1 = set_Info(get_P1Name(), p1Assignment);
+            const player2 = set_Info(get_P2Name(), p2Assignment);
+            return {
+                player1,
+                player2,
+            }
+        }
+        return checkAssignments();
     }
 
     const _getWinner = (assignment,players) => {
@@ -102,9 +141,7 @@ const screenController = (() => {
         //create the player
         const submitBtn = document.querySelector('button');
         submitBtn.addEventListener('click', ()=>{
-            //works
-            console.log(_getNames());
-            _hideForm();
+            _makePlayers();
         })
     }
 
