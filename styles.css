@@ -106,3 +106,7 @@ header h1 {
 .board-square {
     border: 1px solid black;
 }
+
+.no-show{
+    display: none;
+}

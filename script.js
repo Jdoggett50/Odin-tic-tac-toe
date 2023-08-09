@@ -31,26 +31,6 @@ const gameController = (() => {
         } else 
         return players[1].assignment;
     }
-
-    // boardModule.insertAssignment(0,_cyclePlayers(newGame,players))//x
-    // boardModule.insertAssignment(1,_cyclePlayers(newGame,players))//o
-    // boardModule.insertAssignment(2,_cyclePlayers(newGame,players))//x
-    // boardModule.insertAssignment(4,_cyclePlayers(newGame,players))//o
-    // boardModule.insertAssignment(3,_cyclePlayers(newGame,players))//x
-    // boardModule.insertAssignment(6,_cyclePlayers(newGame,players))//o
-    // boardModule.insertAssignment(5,_cyclePlayers(newGame,players))//x
-    // boardModule.insertAssignment(8,_cyclePlayers(newGame,players))//o
-    // boardModule.insertAssignment(7,_cyclePlayers(newGame,players))//x
-    // console.table(newGame)
-
-    //gets the assignments from the submission of the form and creates
-    //the players
-    const _setPlayer = (name, assignment) => { 
-        return {
-            name, 
-            assignment,
-        };
-    };
     
     //returns a boolean whether a win condition is met
     const _checkWin = (arr) => {
@@ -71,10 +51,40 @@ const gameController = (() => {
         return gameWinner
     };
 
-    
+    const _checkTie = (arr) => {
+        if(arr.filter(element => element !== '') && !_checkWin(arr)){
+            return true
+        }
+    }
 
-    //uses the returned value from _checkWin to derive the winner name
-    const getWinner = (assignment,players) => {
+    //calls the round's game logic
+    const playRound = (selection) => {
+        boardModule.insertAssignment(selection, _cyclePlayers(newGame,players))
+        _checkWin(newGame)
+        _checkTie(newGame)
+    }
+
+    return {
+        playRound
+        //winner will be returned from the other IIFE
+    }
+})()
+
+const screenController = (() => {
+
+    const _getPlayers = () => {
+        //look at the form inputs and the checkboxes.
+        const p1Name = document.querySelector('#p1-name');
+        const p2Name = document.querySelector('#p2-name');
+        let player1 = p1Name.value;
+        let player2 = p2Name.value;
+        return {
+            player1,
+            player2,
+        }
+    }
+
+    const _getWinner = (assignment,players) => {
         for(const player of players){
             if (assignment === player.assignment){
                 return player.name;
@@ -82,17 +92,30 @@ const gameController = (() => {
         };
     };
 
-    // console.log(getWinner(_checkWin(newGame),players));
+    const _hideForm = () => {
+        //select the form to hide
+        const form = document.querySelector('.form-wrapper');
+        form.classList.add('no-show');
+    }
 
-    const _checkTie = (arr) => {
-        if(arr.filter(element => element !== '') && !_checkWin(arr)){
-            return true
-        }
+    const submitClick = () => {
+        //create the player
+        const submitBtn = document.querySelector('button');
+        submitBtn.addEventListener('click', ()=>{
+            //works
+            console.log(_getNames());
+            _hideForm();
+        })
+    }
+
+    const squareClick = () => {
+        const boardWrapper = document.querySelector('.board-wrapper');
+        boardWrapper.addEventListener('click', ()=>{
+            //works
+        });
     }
     
-    // _checkTie(newGame)
+    submitClick()
+    squareClick()
 
-    return {
-        //winner will be returned for the other IIFE
-    }
-})()
+})() 
