@@ -18,7 +18,6 @@ const boardModule = (()=>{
 })()
 
 const gameController = (() => {
-    const newGame = boardModule.getBoard();
     //switches player values
     const _cyclePlayers = (arr,players) => {
         const count = arr.filter(index => index != '')
@@ -47,14 +46,15 @@ const gameController = (() => {
         return gameWinner
     };
 
+    //looks at tie on each iteration of the game
     const _checkTie = (arr) => {
         if(arr.filter(element => element !== '') && !_checkWin(arr)){
             return true
         }
     }
 
+    //will receive t/f value to announce winners, value will be give to screencontroller if true
     const _getWinner = (assignment,players) => {
-        
         for(const player of players){
             if (assignment === player.assignment){
                 return player.name;
@@ -62,11 +62,11 @@ const gameController = (() => {
         };
     };
 
-    //calls the round's game logic
-    const playRound = (selection) => {
-        boardModule.insertAssignment(selection, _cyclePlayers(newGame,players))
-        _checkWin(newGame)
-        _checkTie(newGame)
+    
+    const playRound = (selection,arr) => {
+        boardModule.insertAssignment(selection, _cyclePlayers(arr,players))
+        _checkWin(arr)
+        _checkTie(arr)
     }
 
     return {
@@ -75,7 +75,7 @@ const gameController = (() => {
 })()
 
 const screenController = (() => {
-
+    //template for creating players
     const _makePlayers = () => {
         const _getInfo = (name, assignment) => {
             return {
@@ -88,12 +88,13 @@ const screenController = (() => {
             const p1Name = document.querySelector('#p1-name');
             return p1Name.value;
         };
-        
+
         const _getP2Name = () => {
             const p2Name = document.querySelector('#p2-name');
             return p2Name.value;
         }
-    
+
+        //receives assignments from DOM
         const _getAssignments = () => {
             const radioAssignments = document.querySelectorAll('input[type="radio"]');
             let assignmentsArray = [];
@@ -109,6 +110,7 @@ const screenController = (() => {
         const p1Assignment = assignments[0];
         const p2Assignment = assignments[1];
 
+        //checks for assignment equality
         const checkAssignments = () => {
             let assignBool = true;
             if (p1Assignment == p2Assignment){
@@ -118,9 +120,10 @@ const screenController = (() => {
             return assignBool;
         }
 
+        //sets the players if the assignments aren't the same
         const setPlayers = () => {
             if(checkAssignments()){
-                _hideForm()
+                _hideForm();
                 const player1 = _getInfo(_getP1Name(), p1Assignment);
                 const player2 = _getInfo(_getP2Name(), p2Assignment);
                 return {
@@ -132,8 +135,9 @@ const screenController = (() => {
         return setPlayers();
     }
 
+    //this will double in functionality. if form is active I want to hide game. 
+    //if game is active I want to hide form
     const _hideForm = () => {
-        //select the form to hide
         const form = document.querySelector('.form-wrapper');
         form.classList.add('no-show');
     }
@@ -148,12 +152,32 @@ const screenController = (() => {
 
     const squareClick = () => {
         const boardWrapper = document.querySelector('.board-wrapper');
-        boardWrapper.addEventListener('click', ()=> {
-            //works
+        boardWrapper.addEventListener('click', (evt)=> {
+            
+            playRound(evt.target.dataset.index,)
         });
     }
+
+    //remove this
     
     submitClick()
     squareClick()
 
 })() 
+
+/* set the data in one function for use in another function.
+on submit click, store the data.
+
+pseudocode is as follows:
+function playGame () {
+		//data that derives from makePlayers()
+		const newBoard = instance of the boardModule;
+		const newPlayers = instance of this games players as an array
+		const playRound() = () => {
+				// this will execute the functions with the data inside 
+		}
+		return playRound
+}
+
+in short playGame will create the instance of game and playround will be returned as a 
+method of playGame where it will use the stored data from the submission to play a single round.*/
