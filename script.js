@@ -18,11 +18,7 @@ const boardModule = (()=>{
 })()
 
 const gameController = (() => {
-    const player1 = {name:'john', assignment:'x',};
-    const player2 = {name:'haleigh', assignment:'o',};
-    const players = [player1,player2];
     const newGame = boardModule.getBoard();
-    
     //switches player values
     const _cyclePlayers = (arr,players) => {
         const count = arr.filter(index => index != '')
@@ -57,6 +53,15 @@ const gameController = (() => {
         }
     }
 
+    const _getWinner = (assignment,players) => {
+        
+        for(const player of players){
+            if (assignment === player.assignment){
+                return player.name;
+            }
+        };
+    };
+
     //calls the round's game logic
     const playRound = (selection) => {
         boardModule.insertAssignment(selection, _cyclePlayers(newGame,players))
@@ -65,71 +70,67 @@ const gameController = (() => {
     }
 
     return {
-        playRound
-        //winner will be returned from the other IIFE
+        playRound,
     }
 })()
 
 const screenController = (() => {
 
     const _makePlayers = () => {
-        const set_Info = (name, assignment) => {
+        const _getInfo = (name, assignment) => {
             return {
                 name,
                 assignment,
             }
         };
         
-        const get_P1Name = () => {
+        const _getP1Name = () => {
             const p1Name = document.querySelector('#p1-name');
             return p1Name.value;
         };
         
-        const get_P2Name = () => {
+        const _getP2Name = () => {
             const p2Name = document.querySelector('#p2-name');
             return p2Name.value;
         }
     
-        const get_Assignments = () => {
+        const _getAssignments = () => {
             const radioAssignments = document.querySelectorAll('input[type="radio"]');
             let assignmentsArray = [];
-            radioAssignments.forEach(index => {
+            radioAssignments.forEach(index => { 
                 if(index.checked){
                     assignmentsArray.push(index.dataset.assignment);
                 }
             });
             return assignmentsArray;
         }
-    
+        
+        const assignments = _getAssignments();
+        const p1Assignment = assignments[0];
+        const p2Assignment = assignments[1];
+
         const checkAssignments = () => {
             let assignBool = true;
-            const assignments = get_Assignments();
-            const p1Assignment = assignments[0];
-            const p2Assignment = assignments[1];
             if (p1Assignment == p2Assignment){
-                assignBool = false;
                 alert('Assignments must differ');
-            }  
-            if(assignBool){
-                _hideForm()
+                return assignBool = false;
             }
-            const player1 = set_Info(get_P1Name(), p1Assignment);
-            const player2 = set_Info(get_P2Name(), p2Assignment);
-            return {
-                player1,
-                player2,
+            return assignBool;
+        }
+
+        const setPlayers = () => {
+            if(checkAssignments()){
+                _hideForm()
+                const player1 = _getInfo(_getP1Name(), p1Assignment);
+                const player2 = _getInfo(_getP2Name(), p2Assignment);
+                return {
+                    player1,
+                    player2,
+                }
             }
         }
-        return checkAssignments();
+        return setPlayers();
     }
-
-    const _getWinner = (assignment,players) => {
-        for(const player of players){
-            if (assignment === player.assignment){
-                return player.name;
-            }
-        };
-    };
 
     const _hideForm = () => {
         //select the form to hide
@@ -140,14 +141,14 @@ const screenController = (() => {
     const submitClick = () => {
         //create the player
         const submitBtn = document.querySelector('button');
-        submitBtn.addEventListener('click', ()=>{
+        submitBtn.addEventListener('click', ()=> {
             _makePlayers();
         })
     }
 
     const squareClick = () => {
         const boardWrapper = document.querySelector('.board-wrapper');
-        boardWrapper.addEventListener('click', ()=>{
+        boardWrapper.addEventListener('click', ()=> {
             //works
         });
     }
