@@ -5,6 +5,7 @@ const boardModule = (()=>{
     
     const insertAssignment = (selection,assignment) => {
         if(board[selection].length < 1){
+            screenController.setAssignment(selection,assignment)
             return board[selection].push(assignment);
         } return false
     }
@@ -79,7 +80,7 @@ const gameController = (() => {
     }
 
     const checkWin = (arr) => {
-        let winner = false;
+        let isWinner = false;
         const winCases = [
             [0,1,2],[3,4,5],[6,7,8],
             [0,3,6],[1,4,7],[2,5,8],
@@ -88,12 +89,12 @@ const gameController = (() => {
         
         for(const [a,b,c] of winCases){
             if(arr[a].toString() === '' && arr[b].toString() === '' && arr[c].toString() === arr[b].toString()){
-                return winner
+                return isWinner
             }   else if (arr[a].toString() === arr[b].toString() && arr[b].toString() === arr[c].toString()) {
-                winner = arr[a].toString(); 
+                isWinner = arr[a].toString(); 
             }
         }
-        return winner
+        return isWinner
     };
 
     const checkTie = (arr) => {
@@ -110,15 +111,14 @@ const gameController = (() => {
         };
     };
 
-    const squareClick = () => {
+    const _squareClick = () => {
         const boardWrapper = document.querySelector('.board-wrapper');
         boardWrapper.addEventListener('click', (evt) => {
             boardModule.insertAssignment(evt.target.dataset.index,_cyclePlayers(boardModule.getBoard()))
-            screenController.gameStatus()
-            console.log(boardModule.getBoard())
+            console.table(boardModule.getBoard())
         });
     }
-    squareClick();
+    _squareClick();
 
     return {
         getPlayers,
@@ -132,9 +132,19 @@ const screenController = (() => {
     //monitor the board for a winner, if there is, getWinner
     //look over the array and update the board with the values in 
     //the given array
+    
+    const setAssignment = (selection,assignment) => {
+        const squares = document.querySelectorAll('.board-square');
+        for(let i = 0; i < squares.length; i++){
+            if(selection === squares[i].dataset.index){
+                squares[i].textContent = assignment;
+            }
+        }
+        //loop through the boardModule array and append   
+    }
 
-    const gameStatus = () => {
-        const winner = false;
+    const showStatus = () => {
+        let winner = false;
         if(gameController.checkTie(boardModule.getBoard())){
             //monitor the board for a tie, if there is, 
             // two buttons should appear at bottom to 
@@ -144,10 +154,11 @@ const screenController = (() => {
 
         } 
         if(gameController.checkWin(boardModule.getBoard())){
+
             console.log(`winner is: ${gameController.getWinner(gameController.checkWin(boardModule.getBoard()),gameController.getPlayers())}`);
         }
+        return winner
     }
-
 
 
     const hideForm = () => {
@@ -155,17 +166,18 @@ const screenController = (() => {
         form.classList.add('no-show');
     }
 
-    const submitClick = () => {
+    const _submitClick = () => {
         const submitBtn = document.querySelector('button');
         submitBtn.addEventListener('click', () => {
             gameController.getPlayers();
         })
     }
 
-    submitClick()
+    _submitClick()
     
     return {
         hideForm,
-        gameStatus,
+        showStatus,
+        setAssignment,
     }
 })() 
