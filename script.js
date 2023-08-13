@@ -57,32 +57,29 @@ const gameController = (() => {
             }
             return assignBool;
         }
-
         const setPlayers = () => {
             if(checkAssignments()){
                 screenController.hideForm();
                 const player1 = _getInfo(_getP1Name(), p1Assignment);
                 const player2 = _getInfo(_getP2Name(), p2Assignment);
-                return {
-                    player1,
-                    player2,
-                }
+                const players = [player1,player2];
+                return players
             }
         }
-        return setPlayers();
+        return setPlayers()
     }
 
     //in this case, arr is the gameBoard arr
     const _cyclePlayers = (arr) => {
         const count = arr.filter(index => index != '')
         if(count.length === 0 || count.length % 2 === 0){
-            return gameController.getPlayers().player1.assignment;
-        } else 
-        return gameController.getPlayers().player2.assignment;
+            return getPlayers()[0].assignment;
+        } else
+            return getPlayers()[1].assignment;
     }
-    
-    const _checkWin = (arr) => {
-        let gameWinner = false;
+
+    const checkWin = (arr) => {
+        let winner = false;
         const winCases = [
             [0,1,2],[3,4,5],[6,7,8],
             [0,3,6],[1,4,7],[2,5,8],
@@ -91,21 +88,21 @@ const gameController = (() => {
         
         for(const [a,b,c] of winCases){
             if(arr[a].toString() === '' && arr[b].toString() === '' && arr[c].toString() === arr[b].toString()){
-                return gameWinner
+                return winner
             }   else if (arr[a].toString() === arr[b].toString() && arr[b].toString() === arr[c].toString()) {
-                gameWinner = arr[a].toString(); 
+                winner = arr[a].toString(); 
             }
         }
-        return gameWinner
+        return winner
     };
 
-    const _checkTie = (arr) => {
-        if(arr.filter(element => element !== '') && !_checkWin(arr)){
+    const checkTie = (arr) => {
+        if(arr.filter(element => element !== '') && !checkWin(arr)){
             return true
         }
     };
 
-    const _getWinner = (assignment,players) => {
+    const getWinner = (assignment,players) => {
         for(const player of players){
             if (assignment === player.assignment){
                 return player.name;
@@ -113,15 +110,11 @@ const gameController = (() => {
         };
     };
 
-    // _checkWin(arr);
-    // console.log(_checkWin(boardModule.getBoard()))
-    // _getWinner(_checkWin(boardModule.getBoard(),getPlayers()))
-    // _checkTie(arr);
-
     const squareClick = () => {
         const boardWrapper = document.querySelector('.board-wrapper');
         boardWrapper.addEventListener('click', (evt) => {
-        boardModule.insertAssignment(evt.target.dataset.index,_cyclePlayers(boardModule.getBoard()))
+            boardModule.insertAssignment(evt.target.dataset.index,_cyclePlayers(boardModule.getBoard()))
+            screenController.gameStatus()
             console.log(boardModule.getBoard())
         });
     }
@@ -129,16 +122,33 @@ const gameController = (() => {
 
     return {
         getPlayers,
+        checkTie,
+        checkWin,
+        getWinner,
     }
 })()
 
 const screenController = (() => {
-    //on each turn, listen for the winner
-    //on each turn listen for a tie
+    //monitor the board for a winner, if there is, getWinner
     //look over the array and update the board with the values in 
     //the given array
 
-    
+    const gameStatus = () => {
+        const winner = false;
+        if(checkTie(boardModule.getBoard())){
+            //monitor the board for a tie, if there is, 
+            // two buttons should appear at bottom to 
+            // play again or new game, if it's a new game,
+            // hide the game and display the form
+            //if it's play again, wipe the board clean. 
+
+        } 
+        if(checkWin(boardModule.getBoard())){
+            console.log(`winner is: ${gameController.getWinner(gameController.checkWin(boardModule.getBoard()),gameController.getPlayers())}`);
+        }
+    }
+
+
 
     const hideForm = () => {
         const form = document.querySelector('.form-wrapper');
@@ -156,5 +166,6 @@ const screenController = (() => {
     
     return {
         hideForm,
+        gameStatus,
     }
 })() 
