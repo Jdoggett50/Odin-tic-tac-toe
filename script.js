@@ -16,7 +16,6 @@ const boardModule = (()=>{
 })()
 
 const gameController = (() => {
-
     const getPlayers = () => {
         const _getInfo = (name, assignment) => {
             return {
@@ -114,23 +113,19 @@ const gameController = (() => {
         };
     };
 
-    
-    const playRound = (selection,arr) => {
-        boardModule.insertAssignment(selection, _cyclePlayers(arr))
-            _checkWin(arr);
-            console.log(_checkWin(boardModule.getBoard()))
-            _checkTie(arr);
-            console.log(_checkTie(boardModule.getBoard()))
-        }
+    // _checkWin(arr);
+    // console.log(_checkWin(boardModule.getBoard()))
+    // _getWinner(_checkWin(boardModule.getBoard(),getPlayers()))
+    // _checkTie(arr);
 
-        const squareClick = () => {
-            const boardWrapper = document.querySelector('.board-wrapper');
-            boardWrapper.addEventListener('click', (evt) => {
-            boardModule.insertAssignment(evt.target.dataset.index,_cyclePlayers(boardModule.getBoard()))
-                console.log(boardModule.getBoard())
-            });
-        }
-        squareClick()
+    const squareClick = () => {
+        const boardWrapper = document.querySelector('.board-wrapper');
+        boardWrapper.addEventListener('click', (evt) => {
+        boardModule.insertAssignment(evt.target.dataset.index,_cyclePlayers(boardModule.getBoard()))
+            console.log(boardModule.getBoard())
+        });
+    }
+    squareClick();
 
     return {
         getPlayers,
@@ -139,8 +134,11 @@ const gameController = (() => {
 
 const screenController = (() => {
     //on each turn, listen for the winner
+    //on each turn listen for a tie
     //look over the array and update the board with the values in 
     //the given array
+
+    
 
     const hideForm = () => {
         const form = document.querySelector('.form-wrapper');
