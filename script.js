@@ -135,7 +135,7 @@ const screenController = (() => {
 
     const gameStatus = () => {
         const winner = false;
-        if(checkTie(boardModule.getBoard())){
+        if(gameController.checkTie(boardModule.getBoard())){
             //monitor the board for a tie, if there is, 
             // two buttons should appear at bottom to 
             // play again or new game, if it's a new game,
@@ -143,7 +143,7 @@ const screenController = (() => {
             //if it's play again, wipe the board clean. 
 
         } 
-        if(checkWin(boardModule.getBoard())){
+        if(gameController.checkWin(boardModule.getBoard())){
             console.log(`winner is: ${gameController.getWinner(gameController.checkWin(boardModule.getBoard()),gameController.getPlayers())}`);
         }
     }
