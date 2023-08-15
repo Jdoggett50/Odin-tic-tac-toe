@@ -87,8 +87,7 @@ const gameController = (() => {
             [0,3,6],[1,4,7],[2,5,8],
             [0,4,8],[2,4,6]
         ]
-        for(const win of winCases){
-            const [a,b,c] = win;
+        for(const [a,b,c] of winCases){
             if(arr[a] && arr[b] === arr[a] && arr[b] === arr[c]){
                 return arr[a];
             }
@@ -96,11 +95,12 @@ const gameController = (() => {
         return false;
     }
 
-    const checkTie = (arr) => {
-        if(arr.filter(element => element !== '') && !checkWin(arr)){
-            return true
-        }
-    };
+    // const checkTie = (arr) => {
+    //     if(arr.filter(element => element !== '') && !checkWin(arr)){
+    //         return true
+    //     }
+    //     return false;
+    // };
 
     const getWinner = (assignment,players) => {
         for(const player of players){
@@ -113,22 +113,20 @@ const gameController = (() => {
     const _squareClick = () => {
         const boardWrapper = document.querySelector('.board-wrapper');
         boardWrapper.addEventListener('click', (evt) => {
-            boardModule.insertAssignment(evt.target.dataset.index)
-            //console.log(`tie is : ${checkTie(boardModule.getBoard())}`);
+            boardModule.insertAssignment(evt.target.dataset.index);
+            // console.log(`tie is : ${checkTie(boardModule.getBoard())}`);
             console.log(`win is : ${checkWin(boardModule.getBoard())}`);
-            console.table(boardModule.getBoard())
         });
     }
     _squareClick();
 
     return {
         getPlayers,
-        checkTie,
         checkWin,
         getWinner,
         cyclePlayers,
     }
-})()
+})();
 
 const screenController = (() => {
     //monitor the board for a winner, if there is, getWinner
@@ -146,16 +144,7 @@ const screenController = (() => {
 
     const getStatus = () => {
         let winner = false;
-        if(gameController.checkWin(boardModule.getBoard())){
-            console.log(`winner is: ${gameController.getWinner(gameController.checkWin(boardModule.getBoard()),gameController.getPlayers())}`);
-        }
-        if(gameController.checkTie(boardModule.getBoard())){
-            //monitor the board for a tie, if there is, 
-            // two buttons should appear at bottom to 
-            // play again or new game, if it's a new game,
-            // hide the game and display the form
-            //if it's play again, wipe the board clean. 
-        } 
+        
         return winner
     }
 
@@ -179,13 +168,14 @@ const screenController = (() => {
         getStatus,
         setAssignment,
     }
-})() 
+})();
 
-// if (arr[a].toString() === arr[b].toString() && arr[b].toString() === arr[c].toString()) {
-//     console.log(a,b,c)
-//     isWinner = arr[a].toString(); 
-// } else if(arr[a].toString() === '' && arr[b].toString() === '' && arr[c].toString() ===  '' && arr[b].toString() === ''){
-//     console.log(a,b,c)
-//     return isWinner
-// }   
-// return isWinner;
+
+function hide(){
+    const content = document.querySelector('.content-wrapper');
+    const form = document.querySelector('.form-wrapper');
+    content.classList.add('no-show');
+    form.classList.add('no-show');
+}
+
+hide()
