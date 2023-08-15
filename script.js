@@ -1,12 +1,12 @@
 const boardModule = (()=>{
-    const board = [[],[],[],[],[],[],[],[],[]];
-    
+    const board = ['','','','','','','','',''];
     const getBoard = () => board;
     
-    const insertAssignment = (selection,assignment) => {
+    const insertAssignment = (selection) => {
+        //if there is a winner detected, return nothing
         if(board[selection].length < 1){
-            screenController.setAssignment(selection,assignment)
-            return board[selection].push(assignment);
+            screenController.setAssignment(selection,gameController.cyclePlayers(getBoard()))
+            return board[selection] = gameController.cyclePlayers(getBoard());
         } return false
     }
 
@@ -50,7 +50,7 @@ const gameController = (() => {
         const p1Assignment = assignments[0];
         const p2Assignment = assignments[1];
 
-        const checkAssignments = () => {
+        const _checkAssignments = () => {
             let assignBool = true;
             if (p1Assignment == p2Assignment){
                 alert('Assignments must differ');
@@ -59,19 +59,20 @@ const gameController = (() => {
             return assignBool;
         }
         const setPlayers = () => {
-            if(checkAssignments()){
+            if(_checkAssignments()){
                 screenController.hideForm();
                 const player1 = _getInfo(_getP1Name(), p1Assignment);
                 const player2 = _getInfo(_getP2Name(), p2Assignment);
                 const players = [player1,player2];
-                return players
+                return players;
             }
         }
-        return setPlayers()
+        return setPlayers();
     }
 
     //in this case, arr is the gameBoard arr
-    const _cyclePlayers = (arr) => {
+    const cyclePlayers = (arr) => {
+        //if winner is true, return
         const count = arr.filter(index => index != '')
         if(count.length === 0 || count.length % 2 === 0){
             return getPlayers()[0].assignment;
@@ -80,22 +81,17 @@ const gameController = (() => {
     }
 
     const checkWin = (arr) => {
-        let isWinner = false;
-        const winCases = [
+        //this needs to either return the winner assignment or false
+        const winCases = [ 
             [0,1,2],[3,4,5],[6,7,8],
             [0,3,6],[1,4,7],[2,5,8],
-            [0,4,8],[2,4,6]
-        ];
-        
-        for(const [a,b,c] of winCases){
-            if(arr[a].toString() === '' && arr[b].toString() === '' && arr[c].toString() === arr[b].toString()){
-                return isWinner
-            }   else if (arr[a].toString() === arr[b].toString() && arr[b].toString() === arr[c].toString()) {
-                isWinner = arr[a].toString(); 
-            }
-        }
-        return isWinner
-    };
+            [0,4,8],[2,4,6],
+        ]
+        winCases.forEach(win => {
+            const [a,b,c] = win;
+            console.log(win,a,b,c)
+        });
+    }
 
     const checkTie = (arr) => {
         if(arr.filter(element => element !== '') && !checkWin(arr)){
@@ -114,7 +110,9 @@ const gameController = (() => {
     const _squareClick = () => {
         const boardWrapper = document.querySelector('.board-wrapper');
         boardWrapper.addEventListener('click', (evt) => {
-            boardModule.insertAssignment(evt.target.dataset.index,_cyclePlayers(boardModule.getBoard()))
+            boardModule.insertAssignment(evt.target.dataset.index)
+            //console.log(`tie is : ${checkTie(boardModule.getBoard())}`);
+            console.log(`win is : ${checkWin(boardModule.getBoard())}`);
             console.table(boardModule.getBoard())
         });
     }
@@ -125,6 +123,7 @@ const gameController = (() => {
         checkTie,
         checkWin,
         getWinner,
+        cyclePlayers,
     }
 })()
 
@@ -139,24 +138,21 @@ const screenController = (() => {
             if(selection === squares[i].dataset.index){
                 squares[i].textContent = assignment;
             }
-        }
-        //loop through the boardModule array and append   
+        } 
     }
 
-    const showStatus = () => {
+    const getStatus = () => {
         let winner = false;
+        if(gameController.checkWin(boardModule.getBoard())){
+            console.log(`winner is: ${gameController.getWinner(gameController.checkWin(boardModule.getBoard()),gameController.getPlayers())}`);
+        }
         if(gameController.checkTie(boardModule.getBoard())){
             //monitor the board for a tie, if there is, 
             // two buttons should appear at bottom to 
             // play again or new game, if it's a new game,
             // hide the game and display the form
             //if it's play again, wipe the board clean. 
-
         } 
-        if(gameController.checkWin(boardModule.getBoard())){
-
-            console.log(`winner is: ${gameController.getWinner(gameController.checkWin(boardModule.getBoard()),gameController.getPlayers())}`);
-        }
         return winner
     }
 
@@ -177,7 +173,16 @@ const screenController = (() => {
     
     return {
         hideForm,
-        showStatus,
+        getStatus,
         setAssignment,
     }
 })() 
+
+// if (arr[a].toString() === arr[b].toString() && arr[b].toString() === arr[c].toString()) {
+//     console.log(a,b,c)
+//     isWinner = arr[a].toString(); 
+// } else if(arr[a].toString() === '' && arr[b].toString() === '' && arr[c].toString() ===  '' && arr[b].toString() === ''){
+//     console.log(a,b,c)
+//     return isWinner
+// }   
+// return isWinner;
