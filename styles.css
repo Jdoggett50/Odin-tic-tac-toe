@@ -5,20 +5,23 @@
 }
 
 body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    height: 100vh;
+    display: grid;
+    justify-self: center;
+    align-self: center;
 } 
 
 .form-wrapper {
     border: 1px solid black;
+    justify-self: center;
+    align-self: center;
     height: 40vh;
     width: 50vw;
     display: grid;
+    grid-area: 1 / 1 / 2 / 2;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto 1fr 1fr;
 }
@@ -110,6 +113,9 @@ input[type="text"]{
 
 .content-wrapper {
     display: grid;
+    justify-self: center;
+    align-self: center;
+    grid-area: 1 / 1 / 2 / 2;
     width: 100vw;
     height: 75vh;
     border: 1px solid red;
@@ -123,7 +129,7 @@ input[type="text"]{
     grid-template-columns: repeat(3,1fr);
     width: 300px;
     height: 300px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .board-square {
@@ -166,6 +172,6 @@ input[type="text"]{
     height: 30px;
 }
 
-.no-show{
+.no-show {
     display: none;
 }
