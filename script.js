@@ -172,10 +172,12 @@ const screenController = (() => {
 
 
 function hide(){
+    const btnContainer = document.querySelector('.btn-container')
     const content = document.querySelector('.content-wrapper');
     const form = document.querySelector('.form-wrapper');
-    // content.classList.add('no-show');
-    form.classList.add('no-show');
+    content.classList.add('no-show');
+    // form.classList.add('no-show');
+    // btnContainer.classList.add('no-show');
 }
 
 hide()
