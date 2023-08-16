@@ -8,7 +8,7 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <main class="content-wrapper">
+    <div class="content-wrapper">
         <div class="assignment-wrapper">
             <div class="assignment">
                 place img here
@@ -30,16 +30,16 @@
             <div class="board-square" data-index="7"></div>
             <div class="board-square" data-index="8"></div>
         </div>
-    </main>
-    <aside class="winner-wrapper">
-        <header class="winner-header">Winner is:</header>
-        <div class="winner-name"></div>
-        <div class="btn-container">
-            <button type="button">Play Again</button>
-            <button type="button">New Game</button>
+        <div>
+            <div class="winner-header">Winner is:</header></div>
+            <div class="winner-name"></div>
+            <div class="btn-container">
+                <button type="button" class="play-again">Play Again</button>
+                <button type="button" class="new-game">New Game</button>
+            </div>
         </div>
-    </aside>
-    <aside class="form-wrapper">
+    </div>
+    <div class="form-wrapper">
         <header>
             <h1>Player Select</h1>
         </header>
@@ -64,6 +64,6 @@
             </label>
             <button type="button">Start Game</button>
         </form>
-    </aside>
+    </div>
 </body>
 </html>
