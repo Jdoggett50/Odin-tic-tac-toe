@@ -132,8 +132,16 @@ input[type="text"]{
     /* border: 1px solid black; */
 }
 
-.board-square {
-    border: 1px solid black;
+
+.middle-column {
+    border-right: 2px solid black;
+    border-left: 2px solid black;
+}
+
+
+.middle-row {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
 }
 
 .winner-wrapper {
