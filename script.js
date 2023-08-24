@@ -1,18 +1,20 @@
 const boardModule = (()=>{
+
     const board = ['','','','','','','','',''];
+
     const getBoard = () => board;
     
-    const insertAssignment = (selection) => {
-        //if there is a winner detected, return nothing
-        if(board[selection].length < 1){
+    //checks array slot for availability and inserts the value if it is available. 
+    const insertAvailable = (selection) => {
+        if(!board[selection]){
             screenController.setAssignment(selection,gameController.cyclePlayers(getBoard()))
             return board[selection] = gameController.cyclePlayers(getBoard());
-        } return false
+        }
     }
 
     return {
         getBoard,
-        insertAssignment,
+        insertAvailable,
     }
 })()
 
@@ -54,13 +56,13 @@ const gameController = (() => {
             let assignBool = true;
             if (p1Assignment == p2Assignment){
                 alert('Assignments must differ');
-                return assignBool = false;
+                return assignBool = false; 
             }
             return assignBool;
         }
         const setPlayers = () => {
             if(_checkAssignments()){
-                screenController.hideForm();
+                screenController.hide();
                 const player1 = _getInfo(_getP1Name(), p1Assignment);
                 const player2 = _getInfo(_getP2Name(), p2Assignment);
                 const players = [player1,player2];
@@ -87,6 +89,7 @@ const gameController = (() => {
             [0,3,6],[1,4,7],[2,5,8],
             [0,4,8],[2,4,6]
         ]
+
         for(const [a,b,c] of winCases){
             if(arr[a] && arr[b] === arr[a] && arr[b] === arr[c]){
                 return arr[a];
@@ -95,35 +98,26 @@ const gameController = (() => {
         return false;
     }
 
-    // const checkTie = (arr) => {
-    //     if(arr.filter(element => element !== '') && !checkWin(arr)){
-    //         return true
-    //     }
-    //     return false;
-    // };
-
-    const getWinner = (assignment,players) => {
-        for(const player of players){
-            if (assignment === player.assignment){
-                return player.name;
-            }
-        };
-    };
+    const playRound = (evt) => {
+        if (checkWin(boardModule.getBoard())){
+            return screenController.getWinner(checkWin(boardModule.getBoard()), getPlayers());
+        } else (boardModule.insertAvailable(evt.target.dataset.index) && !checkWin(boardModule.getBoard()))
+            return boardModule.insertAvailable(evt.target.dataset.index);
+    }
 
     const _squareClick = () => {
         const boardWrapper = document.querySelector('.board-wrapper');
         boardWrapper.addEventListener('click', (evt) => {
-            boardModule.insertAssignment(evt.target.dataset.index);
             // console.log(`tie is : ${checkTie(boardModule.getBoard())}`);
-            console.log(`win is : ${checkWin(boardModule.getBoard())}`);
+            console.log(`win is : ${playRound(evt)}`);
         });
     }
+    
     _squareClick();
 
     return {
         getPlayers,
         checkWin,
-        getWinner,
         cyclePlayers,
     }
 })();
@@ -133,6 +127,14 @@ const screenController = (() => {
     //look over the array and update the board with the values in 
     //the given array
     
+    const getWinner = (assignment,players) => {
+        for(const player of players){
+            if (assignment === player.assignment){
+                return player.name;
+            }
+        };
+    };
+
     const setAssignment = (selection,assignment) => {
         const squares = document.querySelectorAll('.board-square');
         for(let i = 0; i < squares.length; i++){
@@ -142,14 +144,7 @@ const screenController = (() => {
         } 
     }
 
-    const getStatus = () => {
-        let winner = false;
-        
-        return winner
-    }
-
-
-    const hideForm = () => {
+    const hide = () => {
         const form = document.querySelector('.form-wrapper');
         form.classList.add('no-show');
     }
@@ -161,11 +156,11 @@ const screenController = (() => {
         })
     }
 
-    _submitClick()
+    _submitClick();
     
     return {
-        hideForm,
-        getStatus,
+        hide,
+        getWinner,
         setAssignment,
     }
 })();

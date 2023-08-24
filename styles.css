@@ -129,15 +129,18 @@ input[type="text"]{
     grid-template-columns: repeat(3,1fr);
     width: 300px;
     height: 300px;
-    /* border: 1px solid black; */
 }
 
+.board-square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .middle-column {
     border-right: 2px solid black;
     border-left: 2px solid black;
 }
-
 
 .middle-row {
     border-top: 2px solid black;
