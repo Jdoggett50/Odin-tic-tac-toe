@@ -7,7 +7,7 @@ const boardModule = (()=>{
     //checks array slot for availability and inserts the value if it is available. 
     const insertAvailable = (selection) => {
         if(!board[selection]){
-            screenController.setAssignment(selection,gameController.cyclePlayers(getBoard()))
+            screenController.setAssignment(selection,gameController.cyclePlayers(getBoard()));
             return board[selection] = gameController.cyclePlayers(getBoard());
         }
     }
@@ -72,10 +72,8 @@ const gameController = (() => {
         return setPlayers();
     }
 
-    //in this case, arr is the gameBoard arr
-    const cyclePlayers = (arr) => {
-        //if winner is true, return
-        const count = arr.filter(index => index != '')
+    const cyclePlayers = () => {
+        const count = boardModule.getBoard().filter(index => index != '')
         if(count.length === 0 || count.length % 2 === 0){
             return getPlayers()[0].assignment;
         } else
@@ -92,27 +90,26 @@ const gameController = (() => {
 
         for(const [a,b,c] of winCases){
             if(arr[a] && arr[b] === arr[a] && arr[b] === arr[c]){
-                return arr[a];
+                return arr[a]
             }
         }
         return false;
     }
 
-    const playRound = (evt) => {
-        if (checkWin(boardModule.getBoard())){
-            return screenController.getWinner(checkWin(boardModule.getBoard()), getPlayers());
-        } else (boardModule.insertAvailable(evt.target.dataset.index) && !checkWin(boardModule.getBoard()))
-            return boardModule.insertAvailable(evt.target.dataset.index);
+    const playRound = () => {
+        checkWin(boardModule.getBoard()) ? screenController.getWinner(checkWin(boardModule.getBoard()), getPlayers()) : screenController.makeVisible();  
     }
 
     const _squareClick = () => {
         const boardWrapper = document.querySelector('.board-wrapper');
-        boardWrapper.addEventListener('click', (evt) => {
-            // console.log(`tie is : ${checkTie(boardModule.getBoard())}`);
-            console.log(`win is : ${playRound(evt)}`);
+        boardWrapper.addEventListener('click', () => {
+            // boardModule.insertAvailable(evt.target.dataset.index);
+            playRound();
+            // console.log(`winner is: ${screenController.getWinner(checkWin(boardModule.getBoard()),getPlayers())}`);
+            // console.log(`winner is: ${checkWin(boardModule.getBoard())}`)
         });
     }
-    
+
     _squareClick();
 
     return {
@@ -123,10 +120,15 @@ const gameController = (() => {
 })();
 
 const screenController = (() => {
-    //monitor the board for a winner, if there is, getWinner
-    //look over the array and update the board with the values in 
-    //the given array
+
+    //populate the buttons
+
+    //populate the tie screen
     
+    const makeVisible = () => {
+        console.log('tie case')
+    }
+
     const getWinner = (assignment,players) => {
         for(const player of players){
             if (assignment === player.assignment){
@@ -162,6 +164,7 @@ const screenController = (() => {
         hide,
         getWinner,
         setAssignment,
+        makeVisible,
     }
 })();
 
