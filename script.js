@@ -6,7 +6,7 @@ const boardModule = (()=>{
     
     //checks array slot for availability and inserts the value if it is available. 
     const insertAvailable = (selection) => {
-        if(!board[selection]){
+        if(!board[selection] && !gameController.checkWin(getBoard())){
             screenController.setAssignment(selection,gameController.cyclePlayers(getBoard()));
             return board[selection] = gameController.cyclePlayers(getBoard());
         }
@@ -96,16 +96,17 @@ const gameController = (() => {
         return false;
     }
 
-    const playRound = () => {
+    const playRound = (evt) => {
+        boardModule.insertAvailable(evt)
         checkWin(boardModule.getBoard()) ? screenController.getWinner(checkWin(boardModule.getBoard()), getPlayers()) : screenController.makeVisible();  
     }
 
     const _squareClick = () => {
         const boardWrapper = document.querySelector('.board-wrapper');
-        boardWrapper.addEventListener('click', () => {
+        boardWrapper.addEventListener('click', (evt) => {
             // boardModule.insertAvailable(evt.target.dataset.index);
-            playRound();
-            // console.log(`winner is: ${screenController.getWinner(checkWin(boardModule.getBoard()),getPlayers())}`);
+            console.log(playRound(evt.target.dataset.index));
+            //console.log(`winner is: ${screenController.getWinner(checkWin(boardModule.getBoard()),getPlayers())}`);
             // console.log(`winner is: ${checkWin(boardModule.getBoard())}`)
         });
     }
