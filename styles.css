@@ -1,29 +1,29 @@
-* {
+*, body{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-body {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
+.content-wrapper {
+    margin: auto;
     display: grid;
-    justify-self: center;
-    align-self: center;
-} 
+    grid-template-rows: 4fr 1fr;
+    width: 75vw;
+    height: 100vh;
+    border: 1px solid red;
+}
 
 .form-wrapper {
-    border: 1px solid black;
+    display: grid;
+    grid-row: 1 / 3;
+    grid-column: 1 / 2;
     justify-self: center;
     align-self: center;
-    height: 40vh;
-    width: 50vw;
-    display: grid;
-    grid-area: 1 / 1 / 2 / 2;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto 1fr 1fr;
+    border: 1px solid black;
+    height: 40vh;
+    width: 50vw;
 }
 
 header {
@@ -106,23 +106,11 @@ input[type="text"]{
     justify-self: center;
 }
 
-.assignment-wrapper {
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.content-wrapper {
-    display: grid;
-    justify-self: center;
-    align-self: center;
-    grid-area: 1 / 1 / 2 / 2;
-    width: 100vw;
-    height: 75vh;
-    border: 1px solid red;
-}
 
 .board-wrapper {
     display: grid;
+    grid-row: 1 / 3;
+    grid-column: 1 / 2;
     justify-self: center;
     align-self: center;
     grid-template-rows: repeat(3, 1fr);
@@ -147,35 +135,25 @@ input[type="text"]{
     border-bottom: 2px solid black;
 }
 
-.winner-wrapper {
+.status-wrapper {
     display: grid;
     grid-template-rows: 1fr auto;
-    grid-template-columns: repeat(4, 1fr);
-}
-
-.winner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    grid-row: 1 / 2;
-    grid-column: 2 / 4;
-}
-
-.winner-name {
-    display: flex;
-    justify-content: center;
-    justify-content: center;
+    grid-column: 1 / 2;
     grid-row: 2 / 3;
-    grid-column: 1 / 3;
+}
+
+.status {
+    grid-row: 1 / 3;
+    grid-column: 1 / 2;
+    justify-self: center;
+    justify-self: center;
+    align-self: center;
 }
 
 .btn-container {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    grid-column: 2 / 4;
-    grid-row: 3 / 4;
 }
 
 .btn-container button {

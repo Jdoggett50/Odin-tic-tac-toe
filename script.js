@@ -170,13 +170,12 @@ const screenController = (() => {
 
 
 function hide(){
-    const btnContainer = document.querySelector('.btn-container')
+    const statusWrapper = document.querySelector('.status-wrapper')
     const content = document.querySelector('.content-wrapper');
     const form = document.querySelector('.form-wrapper');
     // content.classList.add('no-show');
-    form.classList.add('no-show');
-    btnContainer.classList.add('no-show');
-    // form.classList.add('hover-effect');
+    // form.classList.add('no-show');
+    // statusWrapper.classList.add('no-show');
 }
 
 hide()
