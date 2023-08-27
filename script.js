@@ -12,6 +12,7 @@ const boardModule = (()=>{
         }
     }
 
+
     return {
         getBoard,
         insertAvailable,
@@ -62,7 +63,7 @@ const gameController = (() => {
         }
         const setPlayers = () => {
             if(_checkAssignments()){
-                screenController.hide();
+                // screenController.hide();
                 const player1 = _getInfo(_getP1Name(), p1Assignment);
                 const player2 = _getInfo(_getP2Name(), p2Assignment);
                 const players = [player1,player2];
@@ -96,17 +97,12 @@ const gameController = (() => {
         return false;
     }
 
-    const playRound = (evt) => {
-        boardModule.insertAvailable(evt)
-        return checkWin(boardModule.getBoard()) ? screenController.getWinner(checkWin(boardModule.getBoard()), getPlayers()) : screenController.makeVisible();  
-    }
-
-    
-
     const _squareClick = () => {
         const boardWrapper = document.querySelector('.board-wrapper');
         boardWrapper.addEventListener('click', (evt) => {
-            console.log(playRound(evt.target.dataset.index));
+            boardModule.insertAvailable(evt.target.dataset.index)
+            console.log(boardModule.getBoard())
+            console.log(screenController.displayStatus())
         });
     }
 
@@ -121,13 +117,40 @@ const gameController = (() => {
 
 const screenController = (() => {
 
-    //populate the buttons
-
-    //populate the tie screen
-    
-    const makeVisible = () => {
-        console.log('tie case')
+    const _btnListeners = () => {
+        const btns = document.querySelectorAll('button');
+        return btns.forEach(btn => btn.addEventListener('click', (evt) => {
+            _toggleDisplay(evt);
+        }))
     }
+    _btnListeners();
+
+    const _toggleDisplay = (e) => {
+        if(e.target.dataset.btn === 'play-again'){
+            console.log('reset board')
+            //reset board 
+        }
+        if(e.target.dataset.btn === 'new-game'){
+            console.log('reset board, hide board, show form, hide buttons')
+            //reset board, hide board, show form, hide buttons
+        }
+        if(e.target.dataset.btn === 'start-game'){
+            console.log('show board, hide form, getPlayers')
+            //show board, hide form
+        }
+    }
+
+    //if there is a winner, insert the data received from 
+    //the gameController function into another function
+
+    const displayStatus = () => { 
+        //target the status container
+        const status = document.querySelector('.status');
+        if(gameController.checkWin(boardModule.getBoard())) {
+            status.textContent = `${getWinner(gameController.checkWin(boardModule.getBoard()), gameController.getPlayers())}`
+        }
+    }
+    
 
     const getWinner = (assignment,players) => {
         for(const player of players){
@@ -145,36 +168,21 @@ const screenController = (() => {
             }
         } 
     }
-
-    const hide = () => {
-        const form = document.querySelector('.form-wrapper');
-        form.classList.add('no-show');
-    }
-
-    const _submitClick = () => {
-        const submitBtn = document.querySelector('button');
-        submitBtn.addEventListener('click', () => {
-            gameController.getPlayers();
-        })
-    }
-
-    _submitClick();
     
     return {
-        hide,
         getWinner,
         setAssignment,
-        makeVisible,
+        displayStatus,
     }
 })();
 
 
 function hide(){
-    const statusWrapper = document.querySelector('.status-wrapper')
-    const content = document.querySelector('.content-wrapper');
-    const form = document.querySelector('.form-wrapper');
-    // content.classList.add('no-show');
-    // form.classList.add('no-show');
+    const formWrapper = document.querySelector('.form-wrapper');
+    const statusWrapper = document.querySelector('.status-wrapper');
+    const boardWrapper = document.querySelector('.board-wrapper');
+    formWrapper.classList.add('no-show');
+    // boardWrapper.classList.add('no-show');
     // statusWrapper.classList.add('no-show');
 }
 
