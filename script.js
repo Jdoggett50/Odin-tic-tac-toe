@@ -149,11 +149,10 @@ const screenController = (() => {
         const statusWrapper = document.querySelector('.status-wrapper');
         const formWrapper = document.querySelector('.form-wrapper');
         const boardWrapper = document.querySelector('.board-wrapper');
+        const quitBtn = document.querySelector('.quit-button');
         if(e.target.dataset.btn === 'play-again'){
-            console.log('reset board')
             boardModule.resetBoard();
-            eraseBoard()
-            //reset board 
+            eraseBoard();
         }
         if(e.target.dataset.btn === 'new-game'){
             console.log('reset board, hide board, show form, hide buttons')
@@ -162,14 +161,20 @@ const screenController = (() => {
             _hide(statusWrapper);
             _hide(boardWrapper);
             _show(formWrapper);
-            //reset board, hide board, show form, hide buttons
         }
         if(e.target.dataset.btn === 'start-game'){
             console.log('show board, hide form, getPlayers')
             _hide(formWrapper);
             _show(boardWrapper);
+            _show(quitBtn);
             gameController.getPlayers();
-            //show board, hide form
+        }
+        if(e.target.dataset.btn === 'quit-game'){
+            boardModule.resetBoard();
+            eraseBoard();
+            _hide(quitBtn);
+            _hide(boardWrapper);
+            _show(formWrapper);
         }
     }
 

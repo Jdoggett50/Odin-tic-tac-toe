@@ -29,7 +29,7 @@ h1 {
     grid-template-rows: auto 1fr 1fr;
     border: 1px solid black;
     height: 40vh;
-    width: 50vw;
+    width: 30vw;
 }
 
 header {
@@ -122,6 +122,15 @@ input[type="text"]{
     grid-template-columns: repeat(3,1fr);
     width: 300px;
     height: 300px;
+}
+
+.quit-button {
+    background: #ffdbc5;
+    border-radius: 10px;
+    border-color: #2e112d;
+    grid-row: 3 / 4;
+    justify-self: end;
+    align-items: center;
 }
 
 .board-square {
