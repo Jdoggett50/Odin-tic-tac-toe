@@ -128,6 +128,11 @@ input[type="text"]{
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: xx-large;
+}
+
+.board-square:hover {
+    background: #f7f7f7;
 }
 
 .middle-column {
@@ -143,9 +148,10 @@ input[type="text"]{
 .status-wrapper {
     display: grid;
     grid-template-rows: 1fr auto;
-    border-top: 1px solid black; 
+    justify-self: center;
     grid-column: 1 / 2;
     grid-row: 3 / 4;
+    width: 300px;
 }
 
 .status {

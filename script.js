@@ -1,8 +1,10 @@
 const boardModule = (()=>{
 
-    const board = ['','','','','','','','',''];
+    let board = ['','','','','','','','',''];
 
     const getBoard = () => board;
+
+    const resetBoard = () => board = ['','','','','','','','',''];
     
     //checks array slot for availability and inserts the value if it is available. 
     const insertAvailable = (selection,arr) => {
@@ -22,8 +24,8 @@ const boardModule = (()=>{
 
     return {
         getBoard,
+        resetBoard,
         insertAvailable,
-        board,
     }
 })()
 
@@ -97,11 +99,21 @@ const gameController = (() => {
         return false;
     }
 
+    const checkTie = (arr) => {
+        if(!checkWin(arr) && !arr.includes('')){
+            return true;
+        } else
+        return false
+
+    };
+
+    //&& !checkWin(arr)
+
     const _squareClick = () => {
         const boardWrapper = document.querySelector('.board-wrapper');
         boardWrapper.addEventListener('click', (evt) => {
             boardModule.insertAvailable(evt.target.dataset.index,boardModule.getBoard())
-            screenController.displayStatus()
+            screenController.displayStatus(boardModule.getBoard())
         });
     }
 
@@ -110,6 +122,7 @@ const gameController = (() => {
     return {
         getPlayers,
         checkWin,
+        checkTie
     }
 })();
 
@@ -138,10 +151,14 @@ const screenController = (() => {
         const boardWrapper = document.querySelector('.board-wrapper');
         if(e.target.dataset.btn === 'play-again'){
             console.log('reset board')
+            boardModule.resetBoard();
+            eraseBoard()
             //reset board 
         }
         if(e.target.dataset.btn === 'new-game'){
             console.log('reset board, hide board, show form, hide buttons')
+            boardModule.resetBoard();
+            eraseBoard()
             _hide(statusWrapper);
             _hide(boardWrapper);
             _show(formWrapper);
@@ -159,13 +176,16 @@ const screenController = (() => {
     //if there is a winner, insert the data received from 
     //the gameController function into another function
 
-    const displayStatus = () => { 
+    const displayStatus = (arr) => { 
         //target the status container
         const status = document.querySelector('.status');
         const statusWrapper = document.querySelector('.status-wrapper');
-        if(gameController.checkWin(boardModule.getBoard())) {
+        if(gameController.checkWin(arr)){
             _show(statusWrapper);
-            return status.textContent = `${getWinner(gameController.checkWin(boardModule.getBoard()), gameController.getPlayers())}`
+            return status.textContent = `Winner is : ${getWinner(gameController.checkWin(arr), gameController.getPlayers())}`;
+        } else if (gameController.checkTie(arr)){
+            _show(statusWrapper);
+            return status.textContent = `Tie Game`;
         }
     }
 
@@ -173,9 +193,16 @@ const screenController = (() => {
         for(const player of players){
             if (assignment === player.assignment){
                 return player.name;
-            }
+            };
         };
     };
+
+    const eraseBoard = () => {
+        const status = document.querySelector('.status');
+        const boardSquares = document.querySelectorAll('.board-square');
+        status.textContent = '';
+        return boardSquares.forEach(el => el.textContent = '');
+    }
 
     const setAssignment = (selection,assignment) => {
         const squares = document.querySelectorAll('.board-square');
