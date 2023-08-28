@@ -5,17 +5,25 @@ const boardModule = (()=>{
     const getBoard = () => board;
     
     //checks array slot for availability and inserts the value if it is available. 
-    const insertAvailable = (selection) => {
-        if(!board[selection] && !gameController.checkWin(getBoard())){
-            screenController.setAssignment(selection,gameController.cyclePlayers(getBoard()));
-            return board[selection] = gameController.cyclePlayers(getBoard());
+    const insertAvailable = (selection,arr) => {
+        if(!arr[selection] && !gameController.checkWin(arr)){
+            screenController.setAssignment(selection,_cyclePlayers(arr));
+            return arr[selection] = _cyclePlayers(arr);
         }
     }
 
+    const _cyclePlayers = (arr) => {
+        const count = arr.filter(index => index != '')
+        if(count.length === 0 || count.length % 2 === 0){
+            return gameController.getPlayers()[0].assignment;
+        } else
+            return gameController.getPlayers()[1].assignment;
+    }
 
     return {
         getBoard,
         insertAvailable,
+        board,
     }
 })()
 
@@ -73,14 +81,6 @@ const gameController = (() => {
         return setPlayers();
     }
 
-    const cyclePlayers = () => {
-        const count = boardModule.getBoard().filter(index => index != '')
-        if(count.length === 0 || count.length % 2 === 0){
-            return getPlayers()[0].assignment;
-        } else
-            return getPlayers()[1].assignment;
-    }
-
     const checkWin = (arr) => {
         //this needs to either return the winner assignment or false
         const winCases = [ 
@@ -100,9 +100,8 @@ const gameController = (() => {
     const _squareClick = () => {
         const boardWrapper = document.querySelector('.board-wrapper');
         boardWrapper.addEventListener('click', (evt) => {
-            boardModule.insertAvailable(evt.target.dataset.index)
-            console.log(boardModule.getBoard())
-            console.log(screenController.displayStatus())
+            boardModule.insertAvailable(evt.target.dataset.index,boardModule.getBoard())
+            screenController.displayStatus()
         });
     }
 
@@ -111,7 +110,6 @@ const gameController = (() => {
     return {
         getPlayers,
         checkWin,
-        cyclePlayers,
     }
 })();
 
@@ -125,17 +123,35 @@ const screenController = (() => {
     }
     _btnListeners();
 
+    const _hide = (segment) => {
+        return segment.classList.add('no-show');
+    }
+
+    const _show = (segment) => {
+        return segment.classList.remove('no-show');
+    }
+    
     const _toggleDisplay = (e) => {
+        //target all the sections
+        const statusWrapper = document.querySelector('.status-wrapper');
+        const formWrapper = document.querySelector('.form-wrapper');
+        const boardWrapper = document.querySelector('.board-wrapper');
         if(e.target.dataset.btn === 'play-again'){
             console.log('reset board')
             //reset board 
         }
         if(e.target.dataset.btn === 'new-game'){
             console.log('reset board, hide board, show form, hide buttons')
+            _hide(statusWrapper);
+            _hide(boardWrapper);
+            _show(formWrapper);
             //reset board, hide board, show form, hide buttons
         }
         if(e.target.dataset.btn === 'start-game'){
             console.log('show board, hide form, getPlayers')
+            _hide(formWrapper);
+            _show(boardWrapper);
+            gameController.getPlayers();
             //show board, hide form
         }
     }
@@ -146,11 +162,12 @@ const screenController = (() => {
     const displayStatus = () => { 
         //target the status container
         const status = document.querySelector('.status');
+        const statusWrapper = document.querySelector('.status-wrapper');
         if(gameController.checkWin(boardModule.getBoard())) {
-            status.textContent = `${getWinner(gameController.checkWin(boardModule.getBoard()), gameController.getPlayers())}`
+            _show(statusWrapper);
+            return status.textContent = `${getWinner(gameController.checkWin(boardModule.getBoard()), gameController.getPlayers())}`
         }
     }
-    
 
     const getWinner = (assignment,players) => {
         for(const player of players){
@@ -175,15 +192,3 @@ const screenController = (() => {
         displayStatus,
     }
 })();
-
-
-function hide(){
-    const formWrapper = document.querySelector('.form-wrapper');
-    const statusWrapper = document.querySelector('.status-wrapper');
-    const boardWrapper = document.querySelector('.board-wrapper');
-    formWrapper.classList.add('no-show');
-    // boardWrapper.classList.add('no-show');
-    // statusWrapper.classList.add('no-show');
-}
-
-hide()
