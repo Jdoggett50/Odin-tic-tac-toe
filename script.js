@@ -122,6 +122,7 @@ const screenController = (() => {
             eraseBoard();
             _hide(quitBtn);
             _hide(gameWrapper);
+            _hide(statusWrapper);
             _show(formWrapper);
         }
     }
