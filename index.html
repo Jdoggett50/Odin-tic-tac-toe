@@ -9,26 +9,28 @@
 </head>
 <body>
     <div class="content-wrapper">
-        <h1> Tic Tac Toe</h1>
-        <div class="board-wrapper no-show">
-            <div class="board-square" data-index="0"></div>
-            <div class="board-square middle-column" data-index="1"></div>
-            <div class="board-square" data-index="2"></div>
-            <div class="board-square middle-row" data-index="3"></div>
-            <div class="board-square middle-row middle-column" data-index="4"></div>
-            <div class="board-square middle-row" data-index="5"></div>
-            <div class="board-square" data-index="6"></div>
-            <div class="board-square middle-column" data-index="7"></div>
-            <div class="board-square" data-index="8"></div>
-        </div>
-        <button type="button" data-btn="quit-game" class="no-show quit-button">Quit Game</button>
-        <div class="status-wrapper no-show">
-            <div class="status"></div>
-            <div class="btn-container">
-                <button type="button" data-btn ="play-again">Play Again</button>
-                <button type="button" data-btn ="new-game">New Game</button>
+        <div class="game-wrapper no-show">
+            <h1> Tic Tac Toe</h1>
+            <div class="board">
+                <div class="board-square" data-index="0"></div>
+                <div class="board-square middle-column" data-index="1"></div>
+                <div class="board-square" data-index="2"></div>
+                <div class="board-square middle-row" data-index="3"></div>
+                <div class="board-square middle-row middle-column" data-index="4"></div>
+                <div class="board-square middle-row" data-index="5"></div>
+                <div class="board-square" data-index="6"></div>
+                <div class="board-square middle-column" data-index="7"></div>
+                <div class="board-square" data-index="8"></div>
+            </div>
+            <div class="status-wrapper no-show">
+                <div class="status"></div>
+                <div class="btn-container">
+                    <button type="button" data-btn ="play-again">Play Again</button>
+                    <button type="button" data-btn ="new-game">New Game</button>
+                </div>
             </div>
         </div>
+        <button type="button" data-btn="quit-game" class="no-show quit-button">Quit Game</button>
         <div class="form-wrapper">
             <header>
                 <h2>Player Selection</h2>

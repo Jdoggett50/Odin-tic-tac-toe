@@ -17,9 +17,9 @@ const boardModule = (()=>{
     const _cyclePlayers = (arr) => {
         const count = arr.filter(index => index != '')
         if(count.length === 0 || count.length % 2 === 0){
-            return gameController.getPlayers()[0].assignment;
+            return playerModule.getPlayers()[0].assignment;
         } else
-            return gameController.getPlayers()[1].assignment;
+            return playerModule.getPlayers()[1].assignment;
     }
 
     return {
@@ -30,58 +30,6 @@ const boardModule = (()=>{
 })()
 
 const gameController = (() => {
-    const getPlayers = () => {
-        const _getInfo = (name, assignment) => {
-            return {
-                name,
-                assignment,
-            }
-        };
-        
-        const _getP1Name = () => {
-            const p1Name = document.querySelector('#p1-name');
-            return p1Name.value;
-        };
-
-        const _getP2Name = () => {
-            const p2Name = document.querySelector('#p2-name');
-            return p2Name.value;
-        }
-
-        const _getAssignments = () => {
-            const radioAssignments = document.querySelectorAll('input[type="radio"]');
-            let assignmentsArray = [];
-            radioAssignments.forEach(index => { 
-                if(index.checked){
-                    assignmentsArray.push(index.dataset.assignment);
-                }
-            });
-            return assignmentsArray;
-        }
-        
-        const assignments = _getAssignments();
-        const p1Assignment = assignments[0];
-        const p2Assignment = assignments[1];
-
-        const _checkAssignments = () => {
-            let assignBool = true;
-            if (p1Assignment == p2Assignment){
-                alert('Assignments must differ');
-                return assignBool = false; 
-            }
-            return assignBool;
-        }
-        const setPlayers = () => {
-            if(_checkAssignments()){
-                // screenController.hide();
-                const player1 = _getInfo(_getP1Name(), p1Assignment);
-                const player2 = _getInfo(_getP2Name(), p2Assignment);
-                const players = [player1,player2];
-                return players;
-            }
-        }
-        return setPlayers();
-    }
 
     const checkWin = (arr) => {
         //this needs to either return the winner assignment or false
@@ -110,8 +58,8 @@ const gameController = (() => {
     //&& !checkWin(arr)
 
     const _squareClick = () => {
-        const boardWrapper = document.querySelector('.board-wrapper');
-        boardWrapper.addEventListener('click', (evt) => {
+        const board = document.querySelector('.board');
+        board.addEventListener('click', (evt) => {
             boardModule.insertAvailable(evt.target.dataset.index,boardModule.getBoard())
             screenController.displayStatus(boardModule.getBoard())
         });
@@ -120,7 +68,6 @@ const gameController = (() => {
     _squareClick();
 
     return {
-        getPlayers,
         checkWin,
         checkTie
     }
@@ -148,7 +95,7 @@ const screenController = (() => {
         //target all the sections
         const statusWrapper = document.querySelector('.status-wrapper');
         const formWrapper = document.querySelector('.form-wrapper');
-        const boardWrapper = document.querySelector('.board-wrapper');
+        const gameWrapper = document.querySelector('.game-wrapper');
         const quitBtn = document.querySelector('.quit-button');
         if(e.target.dataset.btn === 'play-again'){
             boardModule.resetBoard();
@@ -158,22 +105,23 @@ const screenController = (() => {
             console.log('reset board, hide board, show form, hide buttons')
             boardModule.resetBoard();
             eraseBoard()
+            _hide(quitBtn)
             _hide(statusWrapper);
-            _hide(boardWrapper);
+            _hide(gameWrapper);
             _show(formWrapper);
         }
         if(e.target.dataset.btn === 'start-game'){
             console.log('show board, hide form, getPlayers')
             _hide(formWrapper);
-            _show(boardWrapper);
+            _show(gameWrapper);
             _show(quitBtn);
-            gameController.getPlayers();
+            playerModule.getPlayers();
         }
         if(e.target.dataset.btn === 'quit-game'){
             boardModule.resetBoard();
             eraseBoard();
             _hide(quitBtn);
-            _hide(boardWrapper);
+            _hide(gameWrapper);
             _show(formWrapper);
         }
     }
@@ -187,7 +135,7 @@ const screenController = (() => {
         const statusWrapper = document.querySelector('.status-wrapper');
         if(gameController.checkWin(arr)){
             _show(statusWrapper);
-            return status.textContent = `Winner is : ${getWinner(gameController.checkWin(arr), gameController.getPlayers())}`;
+            return status.textContent = `Winner is : ${getWinner(gameController.checkWin(arr), playerModule.getPlayers())}`;
         } else if (gameController.checkTie(arr)){
             _show(statusWrapper);
             return status.textContent = `Tie Game`;
@@ -224,3 +172,64 @@ const screenController = (() => {
         displayStatus,
     }
 })();
+
+const playerModule = (()=>{
+
+    const getPlayers = () => {
+        const _getInfo = (name, assignment) => {
+            return {
+                name,
+                assignment,
+            }
+        };
+        
+        const _getP1Name = () => {
+            const p1Name = document.querySelector('#p1-name');
+            return p1Name.value;
+        };
+
+        const _getP2Name = () => {
+            const p2Name = document.querySelector('#p2-name');
+            return p2Name.value;
+        }
+
+        const _getAssignments = () => {
+            const radioAssignments = document.querySelectorAll('input[type="radio"]');
+            let assignmentsArray = [];
+            radioAssignments.forEach(index => { 
+                if(index.checked){
+                    assignmentsArray.push(index.dataset.assignment);
+                }
+            });
+            return assignmentsArray;
+        }
+        
+        const assignments = _getAssignments();
+        const p1Assignment = assignments[0];
+        const p2Assignment = assignments[1];
+
+        const _checkAssignments = () => {
+            let isSame = true;
+            if (p1Assignment == p2Assignment){
+                alert('Assignments must differ');
+                return isSame = false;
+            }
+            return isSame;
+        }
+
+        const setPlayers = () => {
+            if(_checkAssignments()){
+                // screenController.hide();
+                const player1 = _getInfo(_getP1Name(), p1Assignment);
+                const player2 = _getInfo(_getP2Name(), p2Assignment);
+                const players = [player1,player2];
+                return players;
+            }
+        }
+        return setPlayers();
+    }
+
+    return {
+        getPlayers,
+    }
+})()
