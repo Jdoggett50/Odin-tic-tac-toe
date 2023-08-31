@@ -47,6 +47,7 @@ input[type="text"] {
 .name-label {
     display: grid;
     align-self: center;
+    justify-content: center;
     grid-column: 2 / 5;
 }
 
