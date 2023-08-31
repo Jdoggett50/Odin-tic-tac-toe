@@ -93,7 +93,7 @@ const screenController = (() => {
             alert('Assignments must differ');
             return isValid = false;
         } 
-        return isSame;
+        return isValid;
     }
     
     const _toggleDisplay = (e) => {
