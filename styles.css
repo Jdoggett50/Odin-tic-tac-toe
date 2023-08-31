@@ -26,6 +26,7 @@ input[type="text"] {
 
 .form-wrapper header {
     justify-self: center;
+    align-self: center;
 }
 
 .form-wrapper h2 {
