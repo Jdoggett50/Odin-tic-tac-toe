@@ -20,6 +20,7 @@ input[type="text"] {
 .form-wrapper {
     display: grid;
     justify-self: center;
+    grid-template-rows: 1fr 1fr;
     grid-area: 2 / 1 / 3 / 3;
     border: 1px solid black;
 }
@@ -41,7 +42,7 @@ input[type="text"] {
 
 .player-field {
     display: grid;
-    grid-template-columns: repeat(4,1fr) 3fr;
+    grid-template-columns: repeat(4,1fr) 1fr;
     grid-template-rows: repeat(2, 1fr);
 }
 
@@ -69,7 +70,7 @@ input[type="text"] {
 .content-wrapper {
     margin: auto;
     display: grid;
-    grid-template-rows: 1fr 5fr 2fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr 1fr;
     height: 100vh;
 }
 
