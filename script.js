@@ -5,8 +5,7 @@ const boardModule = (()=>{
     const getBoard = () => board;
 
     const resetBoard = () => board = ['','','','','','','','',''];
-    
-    //checks array slot for availability and inserts the value if it is available. 
+     
     const insertAvailable = (selection,arr) => {
         if(!arr[selection] && !gameController.checkWin(arr)){
             screenController.setAssignment(selection,_cyclePlayers(arr));
@@ -32,7 +31,6 @@ const boardModule = (()=>{
 const gameController = (() => {
 
     const checkWin = (arr) => {
-        //this needs to either return the winner assignment or false
         const winCases = [ 
             [0,1,2],[3,4,5],[6,7,8],
             [0,3,6],[1,4,7],[2,5,8],
@@ -54,8 +52,6 @@ const gameController = (() => {
         return false
 
     };
-
-    //&& !checkWin(arr)
 
     const _squareClick = () => {
         const board = document.querySelector('.board');
@@ -90,9 +86,17 @@ const screenController = (() => {
     const _show = (segment) => {
         return segment.classList.remove('no-show');
     }
+
+    const checkAssignments = (player1,player2) => {
+        let isValid = true;
+        if (player1 == player2){
+            alert('Assignments must differ');
+            return isValid = false;
+        } 
+        return isSame;
+    }
     
     const _toggleDisplay = (e) => {
-        //target all the sections
         const statusWrapper = document.querySelector('.status-wrapper');
         const formWrapper = document.querySelector('.form-wrapper');
         const gameWrapper = document.querySelector('.game-wrapper');
@@ -127,11 +131,7 @@ const screenController = (() => {
         }
     }
 
-    //if there is a winner, insert the data received from 
-    //the gameController function into another function
-
     const displayStatus = (arr) => { 
-        //target the status container
         const status = document.querySelector('.status');
         const statusWrapper = document.querySelector('.status-wrapper');
         if(gameController.checkWin(arr)){
@@ -171,6 +171,7 @@ const screenController = (() => {
         getWinner,
         setAssignment,
         displayStatus,
+        checkAssignments,
     }
 })();
 
@@ -209,18 +210,9 @@ const playerModule = (()=>{
         const p1Assignment = assignments[0];
         const p2Assignment = assignments[1];
 
-        const _checkAssignments = () => {
-            let isSame = true;
-            if (p1Assignment == p2Assignment){
-                alert('Assignments must differ');
-                return isSame = false;
-            }
-            return isSame;
-        }
 
         const setPlayers = () => {
-            if(_checkAssignments()){
-                // screenController.hide();
+            if(screenController.checkAssignments(p1Assignment,p2Assignment)){
                 const player1 = _getInfo(_getP1Name(), p1Assignment);
                 const player2 = _getInfo(_getP2Name(), p2Assignment);
                 const players = [player1,player2];
